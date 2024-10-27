@@ -1,4 +1,9 @@
 from app import db
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey, Float
+from sqlalchemy.orm import relationship
+from datetime import datetime
+
 
 class Reviews(db.Model):
     """Model which stores the information of the reviews submitted"""
@@ -14,7 +19,6 @@ class Reviews(db.Model):
     recommendation = db.Column(db.Integer, nullable=False)
     
 class User(db.Model):
-    """Model which stores the information of the reviews submitted"""
     __tablename__ = 'users'
     user_name = db.Column(db.String(10), nullable=False, primary_key=True)
     name = db.Column(db.String(64),  index=True, nullable=False)
@@ -22,10 +26,31 @@ class User(db.Model):
     password = db.Column(db.String(24), index=True, nullable=False)
     type = db.Column(db.String(10), index=True, nullable=False)
     
-
+    applications = relationship("Application", back_populates="user")
+    jobs = relationship("Job", back_populates="employer") 
     
+class Job(db.Model):
+    """Model that stores job details"""
+    __tablename__ = 'jobs'
+    job_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(64), nullable=False, index=True)
+    description = db.Column(db.Text, nullable=False)
+    location = db.Column(db.String(64), nullable=False)
+    pay = db.Column(db.Float, nullable=True)
+    posted_date = db.Column(db.DateTime, default=datetime.utcnow)
+    employer_id = db.Column(db.String(10), ForeignKey('users.user_name'), nullable=False)  # Reference to User table
+    # Relationship to applications
+    applications = relationship("Application", back_populates="job")
+    employer = relationship("User", back_populates="jobs")  # Link to the employer
+    
+
 class Application(db.Model):
-    """Model which stores the information of the reviews submitted"""
     __tablename__ = 'applications'
-    id = db.Column(db.Integer, nullable=False, primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
+    application_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    job_id = db.Column(db.Integer, ForeignKey('jobs.job_id'), nullable=False)
+    user_name = db.Column(db.String(10), ForeignKey('users.user_name'), nullable=False)
+    application_date = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    user = relationship("User", back_populates="applications")
+    job = relationship("Job", back_populates="applications")
