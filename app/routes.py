@@ -4,21 +4,23 @@ from app.models import Reviews, User
 from flask import render_template, request, redirect, url_for, session, flash
 from functools import wraps
 
+
+
 # Decorator to check if user is logged in
 def login_required(f):
-    
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_name' not in session:
             flash('Please log in to access this page.')
             return redirect(url_for('login'))
+        print(session['user_name'])
         return f(*args, **kwargs)
     return decorated_function
 
 
 @app.route('/')
 def default():
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 
 @app.route('/login', methods=['GET', 'POST'])  # Route for handling the login page logic
@@ -34,7 +36,7 @@ def login():
         # Check admin credentials
         if username == 'admin' and password == 'admin':
             session['user_name'] = 'admin'
-            session['role'] = "admin"
+            session['type'] = "admin"
             return redirect(url_for('home'))  # Redirect to admin home page
 
         # Query the user from the database
@@ -42,7 +44,7 @@ def login():
 
         if user and password == user.password:
             session['user_name'] = user.user_name  # Store user ID in session
-            session['role'] = user.role  # Store role in session
+            session['type'] = user.type  # Store role in session
             return redirect(url_for('home'))  # Redirect to appropriate page
         else:
             error = 'Invalid Credentials. Please try again.'
@@ -68,7 +70,7 @@ def signup():
         email = form.get('email')
         user_name = form.get('user_name')
         password = form.get('password')
-        role = form.get('role')  # Either 'employee' or 'employer'
+        type = form.get('type')  # Either 'employee' or 'employer'
 
         # Check if the username already exists
         existing_user = User.query.filter_by(user_name=user_name).first()
@@ -77,7 +79,7 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Create a new user
-        new_user = User(email=email, user_name=user_name, password=password, role=role)
+        new_user = User(email=email, user_name=user_name, password=password, type=type)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
