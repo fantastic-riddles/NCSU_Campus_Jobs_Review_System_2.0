@@ -38,9 +38,12 @@
     <div class="container-fluid banner">
       <div class="row">
         <div class="col-md-12">
-          <div class="navbar">
+          <div class="navbar px-4">
             <nav class="navbar navbar-sm">
-              <div class="navbar-brand">NC State Campus Jobs</div>
+              <div class="navbar-brand">
+                <a class="nav-link" href="/">NC State Campus Jobs</a>
+              </div>
+              {% if 'username' in session %}
               <ul class="nav">
                 <li class="nav-item">
                   <a class="nav-link" href="/home">HOME</a>
@@ -54,7 +57,11 @@
                 <li class="nav-item">
                   <a class="nav-link" href="#">CONTACT</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
               </ul>
+              {% endif %}
             </nav>
           </div>
 

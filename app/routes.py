@@ -10,10 +10,9 @@ from functools import wraps
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'user_name' not in session:
+        if 'username' not in session:
             flash('Please log in to access this page.')
             return redirect(url_for('login'))
-        print(session['user_name'])
         return f(*args, **kwargs)
     return decorated_function
 
@@ -35,7 +34,7 @@ def login():
 
         # Check admin credentials
         if username == 'admin' and password == 'admin':
-            session['user_name'] = 'admin'
+            session['username'] = 'admin'
             session['type'] = "admin"
             return redirect(url_for('home'))  # Redirect to admin home page
 
@@ -43,7 +42,7 @@ def login():
         user = User.query.filter_by(user_name=username).first()
 
         if user and password == user.password:
-            session['user_name'] = user.user_name  # Store user ID in session
+            session['username'] = user.user_name  # Store user ID in session
             session['type'] = user.type  # Store role in session
             return redirect(url_for('home'))  # Redirect to appropriate page
         else:
