@@ -1,32 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>NCSU Job Review System - Signup</title>
-</head>
-<body>
-    <h2>Signup</h2>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="min-vh-100">
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <p>{{error}}</p>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
     {% endif %}
-    <form method="POST">
-        <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
-
-        <label for="user_name">Username:</label>
-        <input type="text" name="user_name" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br>
-
-        <label for="role">Role:</label>
-        <select name="role" required>
+    <div class="w-50 mt-4 mx-auto border border-2 shadow p-4 rounded">
+      <h2>Signup</h2>
+      <form class="row g-3 needs-validation" validate method="POST">
+        <div class="col-12">
+          <label for="full-name" class="form-label">Full name</label>
+          <input type="text" class="form-control" name="full-name" required />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div class="col-12">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" name="email" required />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div class="col-12">
+          <label for="username" class="form-label">Username</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text" id="inputGroupPrepend">@</span>
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              aria-describedby="inputGroupPrepend"
+              required
+            />
+            <div class="invalid-feedback">Please choose a username.</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            required
+          />
+        </div>
+        <div class="col-12">
+          <label for="type" class="form-label">Role</label>
+          <select class="form-select" name="type" required>
+            <option selected disabled value="">Choose...</option>
             <option value="applicant">Applicant</option>
             <option value="employer">Employer</option>
-        </select><br>
+          </select>
+          <div class="invalid-feedback">Please select a valid role.</div>
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="invalidCheck"
+              required
+            />
+            <label class="form-check-label" for="invalidCheck">
+              Agree to terms and conditions
+            </label>
+            <div class="invalid-feedback">
+              You must agree before submitting.
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Sign Up</button>
+        </div>
+      </form>
+    </div>
+    <p class="text-center">
+      Already have an account? <a href="{{ url_for('login') }}">Log in here</a>
+    </p>
+  </body>
+  <script>
+    (() => {
+      "use strict";
 
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
-</body>
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll(".needs-validation");
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach((form) => {
+        form.addEventListener(
+          "submit",
+          (event) => {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    })();
+  </script>
 </html>

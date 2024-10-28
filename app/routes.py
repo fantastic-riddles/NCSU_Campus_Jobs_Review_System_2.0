@@ -68,9 +68,11 @@ def signup():
     if request.method == 'POST':
         form = request.form
         email = form.get('email')
-        user_name = form.get('user_name')
+        name = form.get('full-name')
+        user_name = form.get('username')
         password = form.get('password')
         type = form.get('type')  # Either 'employee' or 'employer'
+        print(type)
 
         # Check if the username already exists
         existing_user = User.query.filter_by(user_name=user_name).first()
@@ -79,7 +81,7 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Create a new user
-        new_user = User(email=email, user_name=user_name, password=password, type=type)
+        new_user = User(email=email, name=name, user_name=user_name, password=password, type=type)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
