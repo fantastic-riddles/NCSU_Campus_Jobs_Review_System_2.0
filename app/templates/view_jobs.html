@@ -27,20 +27,26 @@
   </head>
   <body scroll="no" style="overflow: hidden">
     {% block content %}
-    <div>
+    <div class="d-flex gap-2 flex-wrap justify-content-center mx-auto">
       {% for job in jobs %}
-      <div class="card" style="width: 18rem">
+      <div class="card w-25 opacity-75">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
+          <h5 class="card-title">{{job.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            {{job.employer_id}}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            {{job.location}}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            ${{ "{:,.2f}".format(job.pay) }}
+          </h6>
+          <p class="card-text">{{job.description}}</p>
           <a href="#" class="card-link">Card link</a>
           <a href="#" class="card-link">Another link</a>
         </div>
       </div>
+      {% endfor %}
     </div>
     {% endblock %}
   </body>
