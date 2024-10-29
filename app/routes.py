@@ -1,6 +1,6 @@
 import time
 from app import app, db
-from app.models import Reviews, User
+from app.models import Reviews, User, Job
 from flask import render_template, request, redirect, url_for, session, flash
 from functools import wraps
 
@@ -10,10 +10,9 @@ from functools import wraps
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'user_name' not in session:
+        if 'username' not in session:
             flash('Please log in to access this page.')
             return redirect(url_for('login'))
-        print(session['user_name'])
         return f(*args, **kwargs)
     return decorated_function
 
@@ -35,7 +34,7 @@ def login():
 
         # Check admin credentials
         if username == 'admin' and password == 'admin':
-            session['user_name'] = 'admin'
+            session['username'] = 'admin'
             session['type'] = "admin"
             return redirect(url_for('home'))  # Redirect to admin home page
 
@@ -43,7 +42,7 @@ def login():
         user = User.query.filter_by(user_name=username).first()
 
         if user and password == user.password:
-            session['user_name'] = user.user_name  # Store user ID in session
+            session['username'] = user.user_name  # Store user ID in session
             session['type'] = user.type  # Store role in session
             return redirect(url_for('home'))  # Redirect to appropriate page
         else:
@@ -68,9 +67,11 @@ def signup():
     if request.method == 'POST':
         form = request.form
         email = form.get('email')
-        user_name = form.get('user_name')
+        name = form.get('full-name')
+        user_name = form.get('username')
         password = form.get('password')
         type = form.get('type')  # Either 'employee' or 'employer'
+        print(type)
 
         # Check if the username already exists
         existing_user = User.query.filter_by(user_name=user_name).first()
@@ -79,7 +80,7 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Create a new user
-        new_user = User(email=email, user_name=user_name, password=password, type=type)
+        new_user = User(email=email, name=name, user_name=user_name, password=password, type=type)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
@@ -153,3 +154,9 @@ def add():
 def view_users():
     users = User.query.all()
     return render_template('view_users.html', users=users)
+
+@app.route('/view-jobs')
+@login_required
+def view_jobs():
+    jobs = Job.query.all()
+    return render_template('view_jobs.html', jobs=jobs)

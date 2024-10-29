@@ -1,0 +1,53 @@
+{% extends 'base.html'%}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewreport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+    <title>NCSU Campus Job</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='/css/index.css')}}"
+    />
+  </head>
+  <body scroll="no" style="overflow: hidden">
+    {% block content %}
+    <div class="d-flex gap-2 flex-wrap justify-content-center mx-auto">
+      {% for job in jobs %}
+      <div class="card w-25 opacity-75">
+        <div class="card-body">
+          <h5 class="card-title">{{job.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            {{job.employer_id}}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            {{job.location}}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            ${{ "{:,.2f}".format(job.pay) }}
+          </h6>
+          <p class="card-text">{{job.description}}</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endblock %}
+  </body>
+</html>
