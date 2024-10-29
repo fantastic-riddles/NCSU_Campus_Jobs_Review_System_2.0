@@ -33,12 +33,12 @@ class Job(db.Model):
     """Model that stores job details"""
     __tablename__ = 'jobs'
     job_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(64), nullable=False, index=True)
+    title = db.Column(db.String(164), nullable=False, index=True)
     description = db.Column(db.Text, nullable=False)
-    location = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(164), nullable=False)
     pay = db.Column(db.Float, nullable=True)
     posted_date = db.Column(db.DateTime, default=datetime.utcnow)
-    employer_id = db.Column(db.String(10), ForeignKey('users.user_name'), nullable=False)  # Reference to User table
+    employer_id = db.Column(db.String(60), ForeignKey('users.user_name'), nullable=False)  # Reference to User table
     # Relationship to applications
     applications = relationship("Application", back_populates="job")
     employer = relationship("User", back_populates="jobs")  # Link to the employer
