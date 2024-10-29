@@ -1,6 +1,6 @@
 import time
 from app import app, db
-from app.models import Reviews, User
+from app.models import Reviews, User, Job
 from flask import render_template, request, redirect, url_for, session, flash
 from functools import wraps
 
@@ -154,3 +154,9 @@ def add():
 def view_users():
     users = User.query.all()
     return render_template('view_users.html', users=users)
+
+@app.route('/view-jobs')
+@login_required
+def view_jobs():
+    jobs = Job.query.all()
+    return render_template('view_jobs.html', jobs=jobs)
