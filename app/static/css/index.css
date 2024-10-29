@@ -80,3 +80,17 @@ body{
   top: 0;
   width: 100%;
 }
+
+.delete-job-btn {
+    background-color: #ff4d4d; /* Red color to indicate delete */
+    border: none;
+	color: white;
+	padding: 12px 16px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.delete-job-btn:hover {
+    background-color: #ff1a1a; /* Darker red on hover */
+}
+
