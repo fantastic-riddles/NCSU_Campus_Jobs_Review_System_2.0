@@ -1,6 +1,6 @@
 import time
 from app import app, db
-from app.models import Reviews, User, Job
+from app.models import Reviews, User, Job, Application
 from flask import render_template, request, redirect, url_for, session, flash
 from functools import wraps
 
@@ -55,7 +55,6 @@ def login():
 def logout():
     """Logs the user out and clears the session."""
     session.clear()
-    flash('You have been logged out.')
     return redirect(url_for('login'))
 
 
@@ -149,14 +148,124 @@ def add():
     return redirect('/home')
 
 
-@app.route('/view_users')
-@login_required
-def view_users():
-    users = User.query.all()
-    return render_template('view_users.html', users=users)
+#TODO: REMOVE THIS ONCE BACKWARD COMPATIBLE
+# @app.route('/view_users')
+# @login_required
+# def view_users():
+#     users = User.query.all()
+#     return render_template('view_users.html', users=users)
+
 
 @app.route('/view-jobs')
 @login_required
 def view_jobs():
-    jobs = Job.query.all()
-    return render_template('view_jobs.html', jobs=jobs)
+    """
+    An API for users to view jobs.
+    """
+    #TODO: IF ADMIN ALLOW HIM TO DELETE JOB POSTING AS WELL
+    if session.get('type') == "applicant" or session.get('type') == "admin":
+        jobs = Job.query.all()
+        return render_template('view_jobs.html', jobs=jobs)
+    return redirect(url_for('home'))
+
+
+
+@app.route('/add-job', methods=['GET', 'POST'])
+@login_required
+def add_job():
+    """
+    An API for employers to post new jobs.
+    """
+
+    # Ensure only employers can add jobs
+    if session.get('type') != 'employer':
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        form = request.form
+        title = form.get('title')
+        description = form.get('description')
+        location = form.get('location')
+        pay = form.get('pay')
+
+        # Get the current employer's username from the session
+        employer_id = session.get('username')
+
+        # Create a new job entry
+        new_job = Job(title=title, description=description, location=location, pay=pay, employer_id=employer_id)
+        db.session.add(new_job)
+        db.session.commit()
+
+        flash("Job posted successfully!")
+        return redirect(url_for('home'))
+
+    return render_template('add_job.html')
+
+
+@app.route('/delete-job/<int:job_id>', methods=['POST'])
+@login_required
+def delete_job(job_id):
+    """
+    Route for admin to delete a job posting.
+    Only accessible by admin users.
+    """
+    # Check if the current user is an admin
+    if session.get('type') != 'admin':
+        flash("You don't have permission to perform this action.")
+        return redirect(url_for('view_jobs'))
+
+    print("Here")
+    # Query the job by job_id
+    job = Job.query.get(job_id)
+    if not job:
+        flash("Job not found.")
+        return redirect(url_for('view_jobs'))
+
+    print("Here again")
+    # Delete the job from the database
+    db.session.delete(job)
+    db.session.commit()
+
+    flash("Job deleted successfully.")
+    return redirect(url_for('view_jobs'))
+
+
+@app.route('/apply/<int:job_id>', methods=['POST'])
+@login_required
+def apply(job_id):
+    """An API for users to apply for a job."""
+    # Get the username from the session
+    user_name = session.get('username')
+
+    # Create a new application entry
+    new_application = Application(job_id=job_id, user_name=user_name)
+    db.session.add(new_application)
+    db.session.commit()
+
+    flash("Application submitted successfully!")
+    return redirect(url_for('view_jobs'))  # Redirect to the job listing page
+
+
+@app.route('/view-applicants')
+@login_required
+def view_applicants():
+    # Get the current user's username and type
+    employer_id = session.get('username')
+    user_type = session.get('type')
+
+    # If the user is admin, fetch all applications
+    if user_type == 'admin':
+        applications = Application.query.all()
+         # Fetch jobs posted by the employer
+        jobs = Job.query.all()
+    else:
+        # Fetch jobs posted by the employer
+        jobs = Job.query.filter_by(employer_id=employer_id).all()
+        # Fetch applications for those jobs
+        applications = Application.query.filter(Application.job_id.in_([job.job_id for job in jobs])).all()
+
+    return render_template('view_applicants.html', applicants=applications, jobs=jobs)
+
+
+
+
