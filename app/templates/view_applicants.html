@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>View Applicants</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/css/index.css')}}" />
+    <style>
+        .card {
+            background-color: #dc3545; /* Red background */
+            color: white; /* White text */
+        }
+        .card-title, .card-subtitle, .card-text {
+            color: white; /* Ensure all card text is white */
+        }
+    </style>
+</head>
+<body scroll="no" style="overflow: hidden">
+    {% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center text-white mb-4">Applicants for Your Jobs</h2>
+
+        {% if not applicants %}
+            <p class="text-center text-white">No applicants for jobs at the moment.</p>
+        {% else %}
+            <div class="d-flex gap-2 flex-wrap justify-content-center mx-auto">
+                {% for application in applicants %}
+                <div class="card w-25 opacity-75 mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ application.user_name }}</h5>
+                        <h6 class="card-subtitle mb-2">
+                            Job Title: 
+                            {% for job in jobs %}
+                                {% if job.job_id == application.job_id %}
+                                    {{ job.title }}
+                                {% endif %}
+                            {% endfor %}
+                        </h6>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+</body>
+</html>
