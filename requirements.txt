@@ -15,3 +15,6 @@ SQLAlchemy==1.4.36
 Werkzeug==2.1.2
 WTForms==3.0.1
 pdoc==12.2.0
+python-http-client==3.3.7 
+sendgrid==6.11.0 
+starkbank-ecdsa==2.2.0
