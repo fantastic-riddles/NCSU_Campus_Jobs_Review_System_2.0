@@ -1,5 +1,6 @@
 import time
 from app import app, db
+from app.email_notification import send_welcome_email
 from app.models import Reviews, User, Job, Application
 from flask import render_template, request, redirect, url_for, session, flash
 from functools import wraps
@@ -69,8 +70,7 @@ def signup():
         name = form.get('full-name')
         user_name = form.get('username')
         password = form.get('password')
-        type = form.get('type')  # Either 'employee' or 'employer'
-        print(type)
+        type = form.get('type')  # Either 'applicant' or 'employer'
 
         # Check if the username already exists
         existing_user = User.query.filter_by(user_name=user_name).first()
@@ -82,6 +82,12 @@ def signup():
         new_user = User(email=email, name=name, user_name=user_name, password=password, type=type)
         db.session.add(new_user)
         db.session.commit()
+
+        is_employee = True
+        if type == "employer":
+            is_employee = False
+
+        send_welcome_email(email, user_name, password, is_employee)
         return redirect(url_for('login'))
 
     return render_template('signup.html')
@@ -148,21 +154,12 @@ def add():
     return redirect('/home')
 
 
-#TODO: REMOVE THIS ONCE BACKWARD COMPATIBLE
-# @app.route('/view_users')
-# @login_required
-# def view_users():
-#     users = User.query.all()
-#     return render_template('view_users.html', users=users)
-
-
 @app.route('/view-jobs')
 @login_required
 def view_jobs():
     """
     An API for users to view jobs.
     """
-    #TODO: IF ADMIN ALLOW HIM TO DELETE JOB POSTING AS WELL
     if session.get('type') == "applicant" or session.get('type') == "admin":
         jobs = Job.query.all()
         return render_template('view_jobs.html', jobs=jobs)
@@ -214,14 +211,12 @@ def delete_job(job_id):
         flash("You don't have permission to perform this action.")
         return redirect(url_for('view_jobs'))
 
-    print("Here")
     # Query the job by job_id
     job = Job.query.get(job_id)
     if not job:
         flash("Job not found.")
         return redirect(url_for('view_jobs'))
 
-    print("Here again")
     # Delete the job from the database
     db.session.delete(job)
     db.session.commit()
@@ -267,5 +262,39 @@ def view_applicants():
     return render_template('view_applicants.html', applicants=applications, jobs=jobs)
 
 
+@app.route('/delete_review/<int:review_id>', methods=['POST'])
+def delete_review(review_id):
+    if session.get('type') == 'admin':  # Check if the user is an admin
+        review = Reviews.query.get(review_id)
+        if review:
+            db.session.delete(review)
+            db.session.commit()
+            flash('Review deleted successfully.', 'success')
+        else:
+            flash('Review not found.', 'danger')
+    else:
+        flash('You do not have permission to delete reviews.', 'danger')
+    return redirect(url_for('page_content'))  # Redirect to the appropriate page
 
 
+@app.route('/view-users')
+def view_users():
+    if session.get('type') != 'admin':
+        return redirect(url_for('index'))
+    
+    users = User.query.all()
+    return render_template('view_users.html', users=users)
+
+@app.route('/delete_user/<string:user_name>', methods=['POST'])
+def delete_user(user_name):
+    if session.get('type') != 'admin':
+        return redirect(url_for('index'))
+    
+    user = User.query.get(user_name)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+    else:
+        flash(f'User {user_name} not found.')
+
+    return redirect(url_for('view_users'))
