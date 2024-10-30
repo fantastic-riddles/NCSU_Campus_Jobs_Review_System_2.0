@@ -15,7 +15,7 @@ COPY . .
 
 # Set the environment variable for Flask
 ENV FLASK_APP=crudapp.py
-#ENV API_KEY=
+#ENV EMAIL_API_KEY=
 
 # Expose the port on which the app will run
 EXPOSE 5000
@@ -26,5 +26,5 @@ CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
 
 ### COMMAND TO CREATE AN IMAGE
 # docker build -t ncsu-campus-jobs .
-# docker run -it -p 5000:5000 -e API_KEY=your_api_key_here ncsu-campus-jobs
+# docker run -it -p 5000:5000 -e EMAIL_API_KEY=your_api_key_here ncsu-campus-jobs
 
