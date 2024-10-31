@@ -294,7 +294,7 @@ def delete_review(review_id):
 @app.route('/view-users')
 def view_users():
     if session.get('type') != 'admin':
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     
     users = User.query.all()
     return render_template('view_users.html', users=users)
@@ -302,7 +302,7 @@ def view_users():
 @app.route('/delete_user/<string:user_name>', methods=['POST'])
 def delete_user(user_name):
     if session.get('type') != 'admin':
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     
     user = User.query.get(user_name)
     if user:
