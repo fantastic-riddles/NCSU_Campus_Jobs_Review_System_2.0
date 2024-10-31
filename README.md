@@ -16,6 +16,19 @@ This is a Flask App for NCSU Campus Job Review System with SQL database for stor
 <a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/Build%20main" /></a>
 <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/website?color=magenta&label=Documentation">
 
+[![cov](https://img.shields.io/badge/coverage-100%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
+[![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
+[![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/issues)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
+![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
+[![Radon](https://img.shields.io/badge/radon_cc-3.33-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
+[![Pylint](https://img.shields.io/badge/pylint-10.00-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
+![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Docker](https://img.shields.io/badge/docker-257bd6?style=for-the-badge&logo=docker&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white)
+![Twilio](https://img.shields.io/static/v1?style=for-the-badge&message=Twilio&color=F22F46&logo=Twilio&logoColor=FFFFFF&label=)
+
 ## Pre-requisites
 To run these scripts, you will require Python installed on your PC. Please visit [Python Installers](https://www.python.org/downloads/) to download the lastest python version. Apart from that, other requirements can be installed with the help of requirements.txt.
 
