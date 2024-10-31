@@ -224,6 +224,17 @@ def delete_job(job_id):
     flash("Job deleted successfully.")
     return redirect(url_for('view_jobs'))
 
+@app.route('/apply-job/<int:job_id>')
+@login_required
+def apply_job(job_id):
+    """HTML page for users to apply for a job."""
+    # Get the username from the session
+    job = Job.query.get(job_id)
+    if not job:
+        flash("Job not found.")
+        return redirect(url_for('view_jobs'))
+    return render_template('apply_job.html',job=job)
+
 
 @app.route('/apply/<int:job_id>', methods=['POST'])
 @login_required

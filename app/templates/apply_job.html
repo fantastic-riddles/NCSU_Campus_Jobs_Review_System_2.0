@@ -31,42 +31,29 @@
   </head>
   <body scroll="no" style="overflow: hidden">
     {% block content %}
-    <div class="d-flex gap-2 flex-wrap justify-content-center mx-auto">
-      {% for job in jobs %}
-      <div class="card w-25 opacity-75">
-        <div class="card-body">
-          <h5 class="card-title">{{job.title}}</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">
-            {{job.employer_id}}
-          </h6>
-          <h6 class="card-subtitle mb-2 text-body-secondary">
-            {{job.location}}
-          </h6>
-          <h6 class="card-subtitle mb-2 text-body-secondary">
-            ${{ "{:,.2f}".format(job.pay) }}
-          </h6>
-          <p class="card-text">{{job.description}}</p>
-          <a href="{{url_for('apply_job',job_id=job.job_id)}}">Apply Now!</a>
-
-          <!-- <a href="#" class="card-link">Link</a> -->
-          {% if session['type'] == 'admin' %}
-          <form
-            action="{{ url_for('delete_job', job_id=job.job_id) }}"
-            method="POST"
-            style="display: inline"
+    <div class="card w-75 mx-auto opacity-75 h-full">
+      <div class="card-body">
+        <h5 class="card-title">{{job.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+          {{job.employer_id}}
+        </h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+          Location: {{job.location}}
+        </h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+          ${{ "{:,.2f}".format(job.pay) }}
+        </h6>
+        <p class="card-text">{{job.description}}</p>
+        <form action="{{ url_for('apply', job_id=job.job_id) }}" method="POST">
+          <button
+            type="submit"
+            class="btn btn-danger btn-md"
+            onclick="return confirm('Are you sure you want to apply for this job?');"
           >
-            <button
-              type="submit"
-              class="btn btn-link card-link"
-              onclick="return confirm('Are you sure you want to delete this job?');"
-            >
-              Delete Job
-            </button>
-          </form>
-          {% endif %}
-        </div>
+            Submit application
+          </button>
+        </form>
       </div>
-      {% endfor %}
     </div>
     {% endblock %}
   </body>
