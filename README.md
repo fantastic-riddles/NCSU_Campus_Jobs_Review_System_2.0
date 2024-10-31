@@ -1,20 +1,36 @@
- # NC State Jobs Review System
+ # NCSU JOB REVIEW SYSTEM 2.0
+
+ <div style="display: flex; justify-content: center;">
+    <div style="text-align: center; margin: 10px;">
+        <img width="400" height="300" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/tree/main/app/static/project_admin.png" alt="Admin">
+        <figcaption>Figure 1: Admin UI</figcaption>
+    </div>
+    <div style="text-align: center; margin: 10px;">
+        <img width="400" height="300" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/tree/main/app/static/project_employer.png" alt="Employer">
+        <figcaption>Figure 2: Employer UI</figcaption>
+    </div>
+    <div style="text-align: center; margin: 10px;">
+        <img width="400" height="300" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/tree/main/app/static/project_applicant.png" alt="Applicant">
+        <figcaption>Figure 3: Applicant UI</figcaption>
+    </div>
+</div>
+
  
 This is a Flask App for NCSU Campus Job Review System with SQL database for storage. Here students from NCSU can view reviews on all different jobs that are available on campus. The aim of the portal is to help students get a closer understanding of the job description and the work, as experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to let them upload honest reviews.
 
-![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png)
+<!-- ![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png) -->
 
 
 
 
-
+<!-- 
 <a href="https://zenodo.org/badge/latestdoi/545210740"><img src="https://zenodo.org/badge/545210740.svg" alt="DOI"></a>
 <a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/graphs/contributors" alt="Contributors"><img src="https://img.shields.io/github/contributors/ashishjoshi2605/ncsu-campus-jobs-review-system" /></a>
 <a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system" alt="Repo Size"><img src="https://img.shields.io/github/repo-size/ashishjoshi2605/ncsu-campus-jobs-review-system" /></a>
 <a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/github/license/ashishjoshi2605/ncsu-campus-jobs-review-system" /></a>
 <a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/issues" alt="Open Issues"><img src="https://img.shields.io/github/issues-raw/ashishjoshi2605/ncsu-campus-jobs-review-system" /></a>
 <a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/Build%20main" /></a>
-<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/website?color=magenta&label=Documentation">
+<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/website?color=magenta&label=Documentation"> -->
 
 ## Pre-requisites
 To run these scripts, you will require Python installed on your PC. Please visit [Python Installers](https://www.python.org/downloads/) to download the lastest python version. Apart from that, other requirements can be installed with the help of requirements.txt.
