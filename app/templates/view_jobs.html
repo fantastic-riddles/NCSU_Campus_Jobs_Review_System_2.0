@@ -1,5 +1,4 @@
 {% extends 'base.html'%}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,8 +18,8 @@
       href="https://fonts.googleapis.com/css?family=Raleway&display=swap"
       rel="stylesheet"
     />
-    <link 
-      rel="stylesheet" 
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/font-awesome.min.css"
     />
     <link
@@ -46,13 +45,28 @@
             ${{ "{:,.2f}".format(job.pay) }}
           </h6>
           <p class="card-text">{{job.description}}</p>
-          <form action="{{ url_for('apply', job_id=job.job_id) }}" method="POST" style="display:inline;">
-            <button type="submit" class="btn btn-link card-link" onclick="return confirm('Are you sure you want to apply for this job?');">Apply for Position</button>
-          </form>
+          {% if session['type']=='applicant' and job.job_id not in
+          applied_job_ids_array%}<a
+            href="{{url_for('apply_job',job_id=job.job_id)}}"
+            >Apply Now!</a
+          >
+          {% else %}
+          <p class="card-text font-weight-bold">Already Applied!!</p>
+          {% endif%}
           <!-- <a href="#" class="card-link">Link</a> -->
           {% if session['type'] == 'admin' %}
-          <form action="{{ url_for('delete_job', job_id=job.job_id) }}" method="POST" style="display:inline;">
-              <button type="submit" class="btn btn-link card-link" onclick="return confirm('Are you sure you want to delete this job?');">Delete Job</button>
+          <form
+            action="{{ url_for('delete_job', job_id=job.job_id) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button
+              type="submit"
+              class="btn btn-link card-link"
+              onclick="return confirm('Are you sure you want to delete this job?');"
+            >
+              Delete Job
+            </button>
           </form>
           {% endif %}
         </div>
