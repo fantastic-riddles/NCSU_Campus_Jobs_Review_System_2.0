@@ -2,15 +2,15 @@
 
  <div style="display: flex; justify-content: center;">
     <div style="text-align: center; margin: 10px;">
-        <img width="400" height="300" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/tree/main/app/static/project_admin.png" alt="Admin">
+        <img width="300" height="200" src="https://raw.githubusercontent.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/refs/heads/feature/readme-badges/app/static/project_admin.png" alt="Admin">
         <figcaption>Figure 1: Admin UI</figcaption>
     </div>
     <div style="text-align: center; margin: 10px;">
-        <img width="400" height="300" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/tree/main/app/static/project_employer.png" alt="Employer">
+        <img width="300" height="200" src="https://raw.githubusercontent.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/refs/heads/feature/readme-badges/app/static/project_employer.png" alt="Employer">
         <figcaption>Figure 2: Employer UI</figcaption>
     </div>
     <div style="text-align: center; margin: 10px;">
-        <img width="400" height="300" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/tree/main/app/static/project_applicant.png" alt="Applicant">
+        <img width="300" height="200" src="https://raw.githubusercontent.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/refs/heads/feature/readme-badges/app/static/project_applicant.png" alt="Applicant">
         <figcaption>Figure 3: Applicant UI</figcaption>
     </div>
 </div>
