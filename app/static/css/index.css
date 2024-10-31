@@ -18,7 +18,6 @@ body{
 	padding-top: 75px;	
 }
 .banner2{
-	height: 100vh;
 	width: 100%;
 	background:url('overlay.png'),url('WolfPlaza.jpg');
 	background-position: top;

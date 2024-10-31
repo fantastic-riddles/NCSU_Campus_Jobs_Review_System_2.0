@@ -1,5 +1,4 @@
 {% extends 'base.html'%}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -46,8 +45,14 @@
             ${{ "{:,.2f}".format(job.pay) }}
           </h6>
           <p class="card-text">{{job.description}}</p>
-          <a href="{{url_for('apply_job',job_id=job.job_id)}}">Apply Now!</a>
-
+          {% if session['type']=='applicant' and job.job_id not in
+          applied_job_ids_array%}<a
+            href="{{url_for('apply_job',job_id=job.job_id)}}"
+            >Apply Now!</a
+          >
+          {% else %}
+          <p class="card-text font-weight-bold">Already Applied!!</p>
+          {% endif%}
           <!-- <a href="#" class="card-link">Link</a> -->
           {% if session['type'] == 'admin' %}
           <form

@@ -162,10 +162,13 @@ def view_jobs():
     """
     if session.get('type') == "applicant" or session.get('type') == "admin":
         jobs = Job.query.all()
-        return render_template('view_jobs.html', jobs=jobs)
+        applications = Application.query.filter_by(user_name= session.get('username')).all()
+        applied_job_ids_array = list(map(get_job_ids, applications))
+        return render_template('view_jobs.html', jobs=jobs,applications=applications,applied_job_ids_array=applied_job_ids_array)
     return redirect(url_for('home'))
 
-
+def get_job_ids(application):
+    return application.job_id
 
 @app.route('/add-job', methods=['GET', 'POST'])
 @login_required
