@@ -18,7 +18,7 @@
 </div>
 
  
-[![cov](https://img.shields.io/badge/coverage-100%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/coverage)](https://github.com/Rmv-se-510/hw2/actions/runs/11096402104)
+[![cov](https://img.shields.io/badge/coverage-100%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/main/LICENSE)
 [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/graphs/contributors)
 [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
