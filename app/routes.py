@@ -312,3 +312,17 @@ def delete_user(user_name):
         flash(f'User {user_name} not found.')
 
     return redirect(url_for('view_users'))
+
+@app.route('/about')
+@login_required
+def about_us():
+    """An API for the user to be able to access the About Us through the navbar"""
+    entries = Reviews.query.all()
+    return render_template('about.html', entries=entries)
+
+@app.route('/contact')
+@login_required
+def contact_us():
+    """An API for the user to be able to access the Contact Us through the navbar"""
+    entries = Reviews.query.all()
+    return render_template('contact.html', entries=entries)
