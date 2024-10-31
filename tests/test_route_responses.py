@@ -1,0 +1,503 @@
+import pytest
+import os
+import sys
+
+sys.path.append(os.getcwd())
+
+from crudapp import *
+from app import db, app
+from app.models import User, Job, Application, Reviews
+
+@pytest.fixture
+def client():
+    """Fixture to create a test client with an in-memory database."""
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    client = app.test_client()
+
+    with app.app_context():
+        db.create_all()
+
+    yield client
+
+    with app.app_context():
+        db.drop_all()
+
+def test_apply_route(client):
+    """Test the apply route for a job application."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    job = Job(title='Test Job', description='Test Description', location='Test Location', pay=20, employer_id='testuser')
+    with app.app_context():
+        db.session.add(job)
+        db.session.commit()
+        job_id = job.job_id
+    response = client.post(f'/apply/{job_id}')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-jobs')
+
+def test_view_applicants_route_employer(client):
+    """Test the view applicants route for an employer."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'employer'
+    response = client.get('/view-applicants')
+    assert response.status_code == 200
+
+def test_view_applicants_route_admin(client):
+    """Test the view applicants route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/view-applicants')
+    assert response.status_code == 200
+
+def test_delete_review_route_admin(client):
+    """Test the delete review route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    review = Reviews(job_title='Test Job', job_description='Test Description', department='Test Department', locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+        review_id = review.id
+    response = client.post(f'/delete_review/{review_id}')
+    assert response.status_code == 302
+    assert response.location.endswith('/pageContent')
+
+def test_view_users_route_admin(client):
+    """Test the view users route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/view-users')
+    assert response.status_code == 200
+
+def test_delete_user_route_admin(client):
+    """Test the delete user route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    user = User(user_name='testuser', name='Test User', email='test@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    response = client.post('/delete_user/testuser')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-users')
+
+def test_login_required_decorator(client):
+    """Test the login required decorator."""
+    response = client.get('/home')
+    assert response.status_code == 302
+    assert response.location.endswith('/login')
+
+def test_add_job_route_non_employer(client):
+    """Test the add job route for a non-employer user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'applicant'
+    response = client.get('/add-job')
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_apply_job_nonexistent_job(client):
+    """Test applying to a nonexistent job."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/apply-job/9999')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-jobs')
+
+def test_delete_job_nonexistent_job(client):
+    """Test deleting a nonexistent job."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.post('/delete-job/9999')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-jobs')
+
+def test_delete_review_nonexistent_review(client):
+    """Test deleting a nonexistent review."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.post('/delete_review/9999')
+    assert response.status_code == 302
+    assert response.location.endswith('/pageContent')
+
+def test_delete_user_nonexistent_user(client):
+    """Test deleting a nonexistent user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.post('/delete_user/nonexistent')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-users')
+
+def test_signup_existing_username(client):
+    """Test signing up with an existing username."""
+    user = User(user_name='existinguser', name='Existing User', email='existing@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    response = client.post('/signup', data={
+        'email': 'new@example.com',
+        'full-name': 'New User',
+        'username': 'existinguser',
+        'password': 'newpass',
+        'type': 'applicant'
+    })
+    assert response.status_code == 200
+    assert b'Username already taken' in response.data
+
+def test_page_content_post_empty_search(client):
+    """Test posting page content with an empty search."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.post('/pageContentPost', data={'search': ''})
+    assert response.status_code == 200
+
+# New test cases
+
+def test_login_invalid_credentials(client):
+    """Test login with invalid credentials."""
+    response = client.post('/login', data={'username': 'invalid', 'password': 'invalid'})
+    assert response.status_code == 200
+    assert b'Invalid Credentials' in response.data
+
+def test_logout_route(client):
+    """Test the logout route."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/logout')
+    assert response.status_code == 302
+    assert response.location.endswith('/login')
+
+def test_signup_route_get(client):
+    """Test the GET request to the signup route."""
+    response = client.get('/signup')
+    assert response.status_code == 200
+
+def test_review_route_authenticated(client):
+    """Test the review route for an authenticated user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/review')
+    assert response.status_code == 200
+
+def test_page_content_route_authenticated(client):
+    """Test the page content route for an authenticated user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/pageContent')
+    assert response.status_code == 200
+
+def test_home_route_authenticated(client):
+    """Test the home route for an authenticated user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/home')
+    assert response.status_code == 200
+
+def test_add_review_route(client):
+    """Test adding a new review."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.post('/add', data={
+        'job_title': 'Test Job',
+        'job_description': 'Test Description',
+        'department': 'Test Department',
+        'locations': 'Test Location',
+        'hourly_pay': '20',
+        'benefits': 'Test Benefits',
+        'review': 'Test Review',
+        'rating': '5',
+        'recommendation': '1'
+    })
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_view_jobs_route_applicant(client):
+    """Test the view jobs route for an applicant."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'applicant'
+    response = client.get('/view-jobs')
+    assert response.status_code == 200
+
+def test_view_jobs_route_employer(client):
+    """Test the view jobs route for an employer."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'employer'
+    response = client.get('/view-jobs')
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_add_job_route_employer(client):
+    """Test adding a new job as an employer."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'employer'
+    response = client.post('/add-job', data={
+        'title': 'New Job',
+        'description': 'Job Description',
+        'location': 'Job Location',
+        'pay': '25'
+    })
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_apply_job_route_get(client):
+    """Test the GET request to apply for a job."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    job = Job(title='Test Job', description='Test Description', location='Test Location', pay=20, employer_id='employer')
+    with app.app_context():
+        db.session.add(job)
+        db.session.commit()
+        job_id = job.job_id
+    response = client.get(f'/apply-job/{job_id}')
+    assert response.status_code == 200
+
+def test_view_applicants_no_applications(client):
+    """Test viewing applicants when there are no applications."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'employer'
+    response = client.get('/view-applicants')
+    assert response.status_code == 200
+    # assert b'No applications found' in response.data
+
+def test_delete_review_non_admin(client):
+    """Test deleting a review as a non-admin user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'applicant'
+    review = Reviews(job_title='Test Job', job_description='Test Description', department='Test Department', locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+        review_id = review.id
+    response = client.post(f'/delete_review/{review_id}')
+    assert response.status_code == 302
+    
+def test_view_users_non_admin(client):
+    """Test viewing users as a non-admin user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'applicant'
+    response = client.get('/view-users')
+    print(response.status_code)
+    assert response.status_code == 302
+
+def test_delete_user_non_admin(client):
+    """Test deleting a user as a non-admin user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+        sess['type'] = 'applicant'
+    response = client.post('/delete_user/someuser')
+    assert response.status_code == 302
+
+def test_signup_invalid_user_type(client):
+    """Test signing up with an invalid user type."""
+    response = client.post('/signup', data={
+        'email': 'test@example.com',
+        'full-name': 'Test User',
+        'username': 'testuser',
+        'password': 'testpass',
+        'type': 'invalid_type'
+    })
+    assert response.status_code == 302
+
+
+def test_apply_job_already_applied(client):
+    """Test applying for a job that the user has already applied to."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+
+    with app.app_context():
+        job = Job(title='Test Job', description='Test Description', location='Test Location', pay=20, employer_id='employer')
+        db.session.add(job)
+        db.session.commit()
+
+        application = Application(job_id=job.job_id, user_name='testuser')
+        db.session.add(application)
+        db.session.commit()
+        job_id = job.job_id
+
+    response = client.post(f'/apply/{job_id}')
+    assert response.status_code == 302
+
+def test_admin_login(client):
+    """Test admin login functionality."""
+    response = client.post('/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+    with client.session_transaction() as sess:
+        assert sess['username'] == 'admin'
+        assert sess['type'] == 'admin'
+
+def test_admin_view_all_jobs(client):
+    """Test admin's ability to view all jobs."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/view-jobs')
+    assert response.status_code == 200
+
+
+def test_admin_view_all_applicants(client):
+    """Test admin's ability to view all applicants."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/view-applicants')
+    assert response.status_code == 200
+
+
+def test_admin_delete_job(client):
+    """Test admin's ability to delete a job."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    job = Job(title='Test Job', description='Test Description', location='Test Location', pay=20, employer_id='employer')
+    with app.app_context():
+        db.session.add(job)
+        db.session.commit()
+        job_id = job.job_id
+    response = client.post(f'/delete-job/{job_id}')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-jobs')
+
+def test_admin_view_users(client):
+    """Test admin's ability to view all users."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/view-users')
+    assert response.status_code == 200
+    
+def test_admin_delete_user(client):
+    """Test admin's ability to delete a user."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    user = User(user_name='testuser', name='Test User', email='test@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    response = client.post('/delete_user/testuser')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-users')
+
+def test_signup_new_user(client):
+    """Test signing up a new user."""
+    response = client.post('/signup', data={
+        'email': 'newuser@example.com',
+        'full-name': 'New User',
+        'username': 'newuser',
+        'password': 'newpass',
+        'type': 'applicant'
+    })
+    assert response.status_code == 302
+    assert response.location.endswith('/login')
+
+def test_login_valid_user(client):
+    """Test login with valid user credentials."""
+    user = User(user_name='validuser', name='Valid User', email='valid@example.com', password='validpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    response = client.post('/login', data={'username': 'validuser', 'password': 'validpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_add_review(client):
+    """Test adding a new review."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.post('/add', data={
+        'job_title': 'New Job',
+        'job_description': 'New Description',
+        'department': 'New Department',
+        'locations': 'New Location',
+        'hourly_pay': '25',
+        'benefits': 'New Benefits',
+        'review': 'Great job!',
+        'rating': '5',
+        'recommendation': '1'
+    })
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_search_reviews(client):
+    """Test searching for reviews."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    review = Reviews(job_title='Searchable Job', job_description='Description', department='Dept', locations='Location', hourly_pay=20, benefits='Benefits', review='Good', rating=4, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+    response = client.post('/pageContentPost', data={'search': 'Searchable Job'})
+    assert response.status_code == 200
+    assert b'Searchable Job' in response.data
+
+def test_view_all_reviews(client):
+    """Test viewing all reviews."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/pageContent')
+    assert response.status_code == 200
+
+def test_employer_add_job(client):
+    """Test an employer adding a new job."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'employer'
+        sess['type'] = 'employer'
+    response = client.post('/add-job', data={
+        'title': 'New Job Posting',
+        'description': 'Job Description',
+        'location': 'Job Location',
+        'pay': '30'
+    })
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+def test_applicant_apply_for_job(client):
+    """Test an applicant applying for a job."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'applicant'
+        sess['type'] = 'applicant'
+    job = Job(title='Available Job', description='Job Description', location='Job Location', pay=25, employer_id='employer')
+    with app.app_context():
+        db.session.add(job)
+        db.session.commit()
+        job_id = job.job_id
+    response = client.post(f'/apply/{job_id}')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-jobs')
+
+def test_login_required_redirect(client):
+    """Test redirect to login page for protected routes."""
+    response = client.get('/home')
+    assert response.status_code == 302
+    assert response.location.endswith('/login')
+
+def test_logout_functionality(client):
+    """Test logout functionality."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'testuser'
+    response = client.get('/logout')
+    assert response.status_code == 302
+    assert response.location.endswith('/login')
+    with client.session_transaction() as sess:
+        assert 'username' not in sess
+
+def test_invalid_route(client):
+    """Test accessing an invalid route."""
+    response = client.get('/invalid-route')
+    assert response.status_code == 404
