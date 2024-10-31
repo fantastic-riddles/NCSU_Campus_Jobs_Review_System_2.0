@@ -14,3 +14,6 @@ def create_table():
     db.create_all()
 
 from app import routes, models
+
+if __name__ == "main":
+    app.run()
