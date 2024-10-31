@@ -1,4 +1,6 @@
- # NCSU JOB REVIEW SYSTEM 2.0
+<h2 align="center">
+    NCSU JOB REVIEW SYSTEM 2.0
+</h2>
 
  <div style="display: flex; justify-content: center;">
     <div style="text-align: center; margin: 10px;">
@@ -16,6 +18,25 @@
 </div>
 
  
+[![cov](https://img.shields.io/badge/coverage-100%25-green?link=https://github.com/Rmv-se-510/hw2/actions/runs/11096402104/jobs/coverage)](https://github.com/Rmv-se-510/hw2/actions/runs/11096402104)
+[![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/hw2/main/LICENSE)
+[![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/hw2/graphs/contributors)
+[![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/hw2/search?l=python)
+[![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/hw2)](https://github.com/Rmv-se-510/hw2/issues)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/hw2.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/hw2.svg)
+![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/hw2.svg)
+<img alt="Actions Status" src="https://github.com/Rmv-se-510/hw2/workflows/Test/badge.svg">
+[![Radon](https://img.shields.io/badge/radon_cc-3.33-green?link=https://github.com/Rmv-se-510/hw2/actions/runs/11096402104/jobs/radon)](https://github.com/Rmv-se-510/hw2/actions/runs/11096402104)
+[![Pylint](https://img.shields.io/badge/pylint-10.00-green?link=https://github.com/Rmv-se-510/hw2/actions/runs/11096402104/jobs/pylint)](https://github.com/Rmv-se-510/hw2/actions/runs/11096402104)
+![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Docker](https://img.shields.io/badge/docker-257bd6?style=for-the-badge&logo=docker&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white)
+![Twilio](https://img.shields.io/static/v1?style=for-the-badge&message=Twilio&color=F22F46&logo=Twilio&logoColor=FFFFFF&label=)
+
+
+
+
 This is a Flask App for NCSU Campus Job Review System with SQL database for storage. Here students from NCSU can view reviews on all different jobs that are available on campus. The aim of the portal is to help students get a closer understanding of the job description and the work, as experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to let them upload honest reviews.
 
 <!-- ![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png) -->
