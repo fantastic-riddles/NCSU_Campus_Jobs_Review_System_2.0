@@ -37,24 +37,29 @@ Empower Your Future: Find Your Campus Opportunity with NCSU!
 
 <h2></h2>
 
+<br>
 
-This is a Flask App for NCSU Campus Job Review System with SQL database for storage. Here students from NCSU can view reviews on all different jobs that are available on campus. The aim of the portal is to help students get a closer understanding of the job description and the work, as experienced by fellow students. The website allows the students to upload reviews for others to view. The anonymity of the students is maintained to let them upload honest reviews.
-
-<!-- ![alt text](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/app/static/ProjectUI.png) -->
-
+The NCSU Campus Job Review System is a dynamic Flask application designed to empower students at North Carolina State University by providing a platform for reviewing campus job opportunities. By sharing experiences and insights, students can make informed decisions about job applications, enhancing their understanding of available roles. This comprehensive system not only supports students in their job search but also enables employers to connect with potential candidates, creating a vibrant campus employment community.
 
 
+#### Key Enhancements
 
-<!-- 
-<a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/github/license/ashishjoshi2605/ncsu-campus-jobs-review-system" /></a>
-<a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/issues" alt="Open Issues"><img src="https://img.shields.io/github/issues-raw/ashishjoshi2605/ncsu-campus-jobs-review-system" /></a>
-<a href="https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system/actions" alt="Build Status"><img src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/Build%20main" /></a>
-<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/ashishjoshi2605/ncsu-campus-jobs-review-system/website?color=magenta&label=Documentation"> -->
+- **User-Friendly Reviews**: Students can anonymously submit and read reviews about various on-campus jobs, fostering a transparent environment for honest feedback.
+- **Enhanced Accessibility**: The application is hosted on Platform Render, ensuring easy access for all users.
+- **Dockerized for Deployment**: With a containerized setup using Docker, the application is easy to deploy and manage, streamlining updates and maintenance.
+- **Email Notifications**: New users receive a welcome email with their credentials upon signing up, ensuring a smooth onboarding process.
+- **Secure Login and Signup**: A robust login and signup system protects user information while maintaining security.
+- **Job Application Feature**: Users can apply for jobs directly through the platform, simplifying the process of securing employment.
+- **Employer Interface**: Employers can post job openings and manage applications efficiently through a dedicated employer page.
+- **Admin Dashboard**: An admin functionality allows for monitoring and moderation of the application, including the ability to manage inappropriate content.
+- **Engaging About Us and Contact Us Pages**: Updated pages provide clear information about the platform and enhance user engagement.
+
 
 <br>
 <br>
 
 ### Pre-requisites
+<h2></h2>
 
 To run these scripts, you will need Python installed on your PC. Please visit [Python Installers](https://www.python.org/downloads/) to download the latest version of Python. 
 
@@ -79,7 +84,7 @@ Alternatively, if you just want to play around with the application without inst
 
 ### Installation <img src="https://media.licdn.com/dms/image/D4D12AQFWFLeRgjzEdA/article-cover_image-shrink_600_2000/0/1674452473282?e=2147483647&v=beta&t=CTX82s8PK-F_rq_u0U5-qx_Pavm7l6y0WolsperM6N0" alt="python flask" width="90"/>
 
-
+<h2></h2>
 Initially you can check whether your system has python pre-installed or not, usually nowadays in most of the systems, be it Windows or MacOS, python is pre-installed. 
 
 To check whether you have python installed or not, you can open CMD or a Terminal and run the command "python --version". If the CMD shows the version such as Python 3.6.7 then your system already has python installed and you just need to clone the repository and run the python scripts. 
@@ -93,7 +98,7 @@ You can refer [INSTALL.md](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review
 
 
 ### API Key from SendGrid <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/SendGrid_2016_Logo.png" alt="Sendgrid logo" width="90"/>
-
+<h2></h2>
 To use SendGrid for sending emails, you'll need to create an API key. Follow these steps to get started:
 
 1. [Sign up for SendGrid](#sign-up-for-sendgrid)
@@ -130,6 +135,7 @@ To use SendGrid for sending emails, you'll need to create an API key. Follow the
 <br>
 
 ### Docker setup  <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Docker_logo.png" alt="Docker Logo" width="90"/>
+<h2></h2>
 
 1. [Prerequisites](#prerequisites)
 2. [Steps to Build and Run the Application](#steps-to-build-and-run-the-application)
@@ -196,6 +202,8 @@ Once the container is running, you can access the application by navigating to `
 <br>
 
 ### Contributors <img src="https://static.wikia.nocookie.net/windows/images/0/01/GitHub_logo_2013.png/revision/latest/thumbnail/width/360/height/360?cb=20231201024220" alt="Github" width="90"/>
+<h2></h2>
+
 We'd like to thank the following contributors for their valuable input and enhancements to this project:
 
 - [Meet Vora](https://github.com/your-profile)
