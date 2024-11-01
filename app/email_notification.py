@@ -41,7 +41,6 @@ The NCSU Job Portal Team
 """
 
 
-
 def send_welcome_email(email, username, password, is_employee=False):
     """
     This function sends welcome message to user on signup
@@ -51,7 +50,7 @@ def send_welcome_email(email, username, password, is_employee=False):
         username: username of receiver
         password: password of receiver
         is_employee (default: false): send message based on role assumed by receiver
-    
+
     Return:
         status: boolean indicating email success
         status_code: HTTP status code
@@ -65,9 +64,10 @@ def send_welcome_email(email, username, password, is_employee=False):
             mssg = employee_mssg
         else:
             mssg = employer_mssg
-        
-        mssg = mssg.replace("<username>", username).replace("<password>", password)
-        
+
+        mssg = mssg.replace("<username>", username).replace(
+            "<password>", password)
+
         message = Mail(
         from_email="viharshah222@gmail.com",
         to_emails=email,
@@ -76,12 +76,12 @@ def send_welcome_email(email, username, password, is_employee=False):
 
         sg = SendGridAPIClient(api_key=os.environ.get('EMAIL_API_KEY'))
         response = sg.send(message)
-        
+
         if response.status_code == 200 or response.status_code == 202:
             status = True
             return status, 200
         else:
             return status, response.status_code
-        
+
     except Exception as e:
         return status, 400

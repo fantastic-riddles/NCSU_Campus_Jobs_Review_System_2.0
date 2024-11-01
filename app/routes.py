@@ -1,16 +1,45 @@
-import time
+"""
+This module contains the routing logic for a job portal web application, built using Flask. 
+
+The main routes and functionalities include:
+- **User Authentication**: Routes for login, logout, and signup, allowing users to authenticate, register, and manage sessions.
+- **Job Listings**: Routes for employers to add, view, and delete job listings and for applicants to view and apply for jobs.
+- **Reviews**: Routes for users to submit, view, and delete reviews about jobs.
+- **Application Management**: Allows applicants to apply to jobs and employers (or admins) to view applications for specific jobs.
+- **User Management**: Admins can view and delete user accounts, with session management to restrict access based on user roles.
+- **Static Pages**: Access to About Us and Contact Us pages, available through the navigation bar.
+
+Key Components:
+- `login_required`: A decorator to enforce user authentication before accessing specific routes.
+- `send_welcome_email`: A utility for sending welcome emails to users upon registration.
+- HTML templates render views for all routes, displaying job listings, user reviews, applications, and other static content.
+
+Routes:
+- Authentication (`/login`, `/logout`, `/signup`)
+- Job-related actions (`/view-jobs`, `/add-job`, `/delete-job/<job_id>`, `/apply-job/<job_id>`)
+- Review actions (`/review`, `/pageContent`, `/delete_review/<review_id>`)
+- User management (`/view-users`, `/delete_user/<user_name>`)
+- Static pages (`/about`, `/contact`)
+
+Each route interacts with the database, managing user sessions, and displays specific templates.
+"""
+
+from functools import wraps
+from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db
 from app.email_notification import send_welcome_email
 from app.models import Reviews, User, Job, Application
-from flask import render_template, request, redirect, url_for, session, flash
-from functools import wraps
 
 
 
 # Decorator to check if user is logged in
 def login_required(f):
+    """This function checks whether the user has logged in or not"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        """
+        This is a wrapper function to check whether user is in session or not
+        """
         if 'username' not in session:
             flash('Please log in to access this page.')
             return redirect(url_for('login'))
@@ -20,6 +49,9 @@ def login_required(f):
 
 @app.route('/')
 def default():
+    """
+    This API directs directly to homepage
+    """
     return redirect(url_for('home'))
 
 
@@ -42,13 +74,13 @@ def login():
         # Query the user from the database
         user = User.query.filter_by(user_name=username).first()
 
-        if user and password == user.password:
+        if user and password == user.password: # pylint: disable=no-member
             session['username'] = user.user_name  # Store user ID in session
             session['type'] = user.type  # Store role in session
             return redirect(url_for('home'))  # Redirect to appropriate page
         else:
-            error = 'Invalid Credentials. Please try again.'
-    
+            error = 'Invalid Credentials. Please try again.' # pylint: disable=no-member
+
     return render_template('login.html', error=error)
 
 
@@ -62,7 +94,7 @@ def logout():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     """
-    An API for the user signup page, allowing users to create accounts as either employee or employer.
+    An API for user signup page, allowing users to create accounts as either employee or employer.
     """
     if request.method == 'POST':
         form = request.form
@@ -70,7 +102,7 @@ def signup():
         name = form.get('full-name')
         user_name = form.get('username')
         password = form.get('password')
-        type = form.get('type')  # Either 'applicant' or 'employer'
+        role = form.get('type')  # Either 'applicant' or 'employer'
 
         # Check if the username already exists
         existing_user = User.query.filter_by(user_name=user_name).first()
@@ -79,12 +111,12 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Create a new user
-        new_user = User(email=email, name=name, user_name=user_name, password=password, type=type)
-        db.session.add(new_user)
-        db.session.commit()
+        new_user = User(email=email, name=name, user_name=user_name, password=password, type=role)
+        db.session.add(new_user) # pylint: disable=no-member
+        db.session.commit() # pylint: disable=no-member
 
         is_employee = True
-        if type == "employer":
+        if role == "employer":
             is_employee = False
 
         send_welcome_email(email, user_name, password, is_employee)
@@ -143,14 +175,17 @@ def add():
     locations = form.get('locations')
     hourly_pay = form.get('hourly_pay')
     benefits = form.get('benefits')
-    review = form.get('review')
+    review_sample = form.get('review')
     rating = form.get('rating')
     recommendation = form.get('recommendation')
 
-    entry = Reviews(job_title=title, job_description=description, department=department, locations=locations, 
-                    hourly_pay=hourly_pay, benefits=benefits, review=review, rating=rating, recommendation=recommendation)
-    db.session.add(entry)
-    db.session.commit()
+    entry = Reviews(job_title=title, job_description=description,
+                    department=department, locations=locations,
+                    hourly_pay=hourly_pay, benefits=benefits,
+                    review=review_sample, rating=rating,
+                    recommendation=recommendation)
+    db.session.add(entry) # pylint: disable=no-member
+    db.session.commit() # pylint: disable=no-member
     return redirect('/home')
 
 
@@ -168,6 +203,9 @@ def view_jobs():
     return redirect(url_for('home'))
 
 def get_job_ids(application):
+    """
+    This function is used to get all the job ids in the application table.
+    """
     return application.job_id
 
 @app.route('/add-job', methods=['GET', 'POST'])
@@ -193,8 +231,8 @@ def add_job():
 
         # Create a new job entry
         new_job = Job(title=title, description=description, location=location, pay=pay, employer_id=employer_id)
-        db.session.add(new_job)
-        db.session.commit()
+        db.session.add(new_job) # pylint: disable=no-member
+        db.session.commit() # pylint: disable=no-member
 
         flash("Job posted successfully!")
         return redirect(url_for('home'))
@@ -221,8 +259,8 @@ def delete_job(job_id):
         return redirect(url_for('view_jobs'))
 
     # Delete the job from the database
-    db.session.delete(job)
-    db.session.commit()
+    db.session.delete(job) # pylint: disable=no-member
+    db.session.commit() # pylint: disable=no-member
 
     flash("Job deleted successfully.")
     return redirect(url_for('view_jobs'))
@@ -248,8 +286,8 @@ def apply(job_id):
 
     # Create a new application entry
     new_application = Application(job_id=job_id, user_name=user_name)
-    db.session.add(new_application)
-    db.session.commit()
+    db.session.add(new_application) # pylint: disable=no-member
+    db.session.commit() # pylint: disable=no-member
 
     flash("Application submitted successfully!")
     return redirect(url_for('view_jobs'))  # Redirect to the job listing page
@@ -258,6 +296,9 @@ def apply(job_id):
 @app.route('/view-applicants')
 @login_required
 def view_applicants():
+    """
+    This function displays all the applications
+    """
     # Get the current user's username and type
     employer_id = session.get('username')
     user_type = session.get('type')
@@ -278,11 +319,14 @@ def view_applicants():
 
 @app.route('/delete_review/<int:review_id>', methods=['POST'])
 def delete_review(review_id):
+    """
+    This function gets admin rights to delete the reviews if he wants.
+    """
     if session.get('type') == 'admin':  # Check if the user is an admin
-        review = Reviews.query.get(review_id)
-        if review:
-            db.session.delete(review)
-            db.session.commit()
+        review_rows = Reviews.query.get(review_id)
+        if review_rows:
+            db.session.delete(review_rows) # pylint: disable=no-member
+            db.session.commit() # pylint: disable=no-member
             flash('Review deleted successfully.', 'success')
         else:
             flash('Review not found.', 'danger')
@@ -293,21 +337,27 @@ def delete_review(review_id):
 
 @app.route('/view-users')
 def view_users():
+    """
+    This function is used to view the users in the system
+    """
     if session.get('type') != 'admin':
         return redirect(url_for('home'))
-    
+
     users = User.query.all()
     return render_template('view_users.html', users=users)
 
 @app.route('/delete_user/<string:user_name>', methods=['POST'])
 def delete_user(user_name):
+    """
+    This function deletes the username from the system/database
+    """
     if session.get('type') != 'admin':
         return redirect(url_for('home'))
-    
+
     user = User.query.get(user_name)
     if user:
-        db.session.delete(user)
-        db.session.commit()
+        db.session.delete(user) # pylint: disable=no-member
+        db.session.commit() # pylint: disable=no-member
     else:
         flash(f'User {user_name} not found.')
 
