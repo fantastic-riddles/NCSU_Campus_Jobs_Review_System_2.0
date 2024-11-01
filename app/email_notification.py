@@ -69,7 +69,7 @@ def send_welcome_email(email, username, password, is_employee=False):
         mssg = mssg.replace("<username>", username).replace("<password>", password)
         
         message = Mail(
-        from_email=os.environ.get('EMAIL_ADDRESS'),
+        from_email="viharshah222@gmail.com",
         to_emails=email,
         subject='Welcome to NCSU Job Portal account!',
         html_content=f"{mssg}")
