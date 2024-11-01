@@ -803,7 +803,6 @@ def test_logout_as_applicant(client):
     assert response.status_code == 302
     assert response.location.endswith('/login')
 
-
 def test_admin_login_and_delete_user_success(client):
     """Test admin logging in and successfully deleting a user."""
     # Admin logs in
