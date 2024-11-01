@@ -69,10 +69,11 @@ def send_welcome_email(email, username, password, is_employee=False):
             "<password>", password)
 
         message = Mail(
-        from_email="viharshah222@gmail.com",
-        to_emails=email,
-        subject='Welcome to NCSU Job Portal account!',
-        html_content=f"{mssg}")
+            from_email=os.environ.get('EMAIL_ADDRESS'),
+            to_emails=email,
+            subject='Welcome to NCSU Job Portal account!',
+            html_content=f"{mssg}")
+
 
         sg = SendGridAPIClient(api_key=os.environ.get('EMAIL_API_KEY'))
         response = sg.send(message)

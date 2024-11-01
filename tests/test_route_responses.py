@@ -802,3 +802,388 @@ def test_logout_as_applicant(client):
     response = client.get('/logout')
     assert response.status_code == 302
     assert response.location.endswith('/login')
+
+def test_admin_login_and_delete_user_success(client):
+    """Test admin logging in and successfully deleting a user."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Create a user to delete
+    user = User(user_name='deletetestuser', name='Delete Test User',
+                email='deleteuser@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+
+    # Admin deletes the user
+    response = client.post('/delete_user/deletetestuser')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-users')
+    
+
+def test_admin_login_and_verify_delete_user(client):
+    """Test admin logging in and verify if user is successfully deleted after deleting"""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Create a user to delete
+    user = User(user_name='deletetestuser', name='Delete Test User',
+                email='deleteuser@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+
+    # Admin deletes the user
+    response = client.post('/delete_user/deletetestuser')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-users')
+    
+    # Verify user no longer exists
+    with app.app_context():
+        deleted_user = User.query.filter_by(user_name='deletetestuser').first()
+        assert deleted_user is None
+        
+        
+def test_admin_login_and_delete_non_existent_user(client):
+    """Test admin logging in and attempting to delete a non-existent user."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Attempt to delete a non-existent user
+    response = client.post('/delete_user/nonexistentuser')
+    assert response.status_code == 302  # Expect a 302 response for user not found
+        
+    
+def test_admin_login_view_users_and_delete_user(client):
+    """Test admin logging in, viewing all users, and then deleting a specific user."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View users
+    response = client.get('/view-users')
+    assert response.status_code == 200
+
+    # Create a user to delete
+    user = User(user_name='deletetestuser2', name='Delete Test User 2',
+                email='deleteuser2@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+
+    # Delete the created user
+    response = client.post('/delete_user/deletetestuser2')
+    assert response.status_code == 302
+    assert response.location.endswith('/view-users')
+    
+    # Verify user no longer exists
+    with app.app_context():
+        deleted_user = User.query.filter_by(user_name='deletetestuser2').first()
+        assert deleted_user is None
+
+
+def test_admin_login_and_delete_review_success(client):
+    """Test admin logging in and successfully deleting a review."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Create a review to delete
+    review = Reviews(id=1,job_title='Test Job', job_description='Test Description', department='Test Department',
+                      locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+
+    # Admin deletes the review
+    response = client.post('/delete_review/1')
+    assert response.status_code == 302
+    
+    # Verify review no longer exists
+    with app.app_context():
+        deleted_review = Reviews.query.filter_by(id=1).first()
+        assert deleted_review is None
+
+
+def test_admin_login_and_delete_non_existent_review(client):
+    """Test admin logging in and attempting to delete a non-existent review."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Attempt to delete a non-existent review
+    response = client.post('/delete_review/999')
+    assert response.status_code == 302  # Expect a 404 response for review not found
+
+
+def test_admin_login_and_delete_own_review(client):
+    """Test admin logging in and attempting to delete their own review, if applicable."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Create a review by admin to delete
+    review = Reviews(id=2,job_title='Test Job', job_description='Test Description', department='Test Department',
+                      locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+
+    # Admin deletes their own review
+    response = client.post('/delete_review/2')
+    assert response.status_code == 302
+    
+    # Verify review no longer exists
+    with app.app_context():
+        deleted_review = Reviews.query.filter_by(id=2).first()
+        assert deleted_review is None
+
+
+def test_admin_login_view_reviews_and_delete_review(client):
+    """Test admin logging in, viewing all reviews, and then deleting a specific review."""
+    # Admin logs in
+    response = client.post(
+        '/login', data={'username': 'admin', 'password': 'admin'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View reviews
+    response = client.get('/pageContent')
+    assert response.status_code == 200
+
+    # Create a review to delete
+    review = Reviews(id=3,job_title='Test Job', job_description='Test Description', department='Test Department',
+                      locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+
+    # Delete the created review
+    response = client.post('/delete_review/3')
+    assert response.status_code == 302
+    
+    # Verify review no longer exists
+    with app.app_context():
+        deleted_review = Reviews.query.filter_by(id=3).first()
+        assert deleted_review is None
+
+
+def test_non_admin_login_and_delete_user_failure(client):
+    """Test non admin logging in and not able to delete a user."""
+    
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non-Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Create a user to delete
+    deleteuser = User(user_name='deletetestuser', name='Delete Test User',
+                email='deleteuser@example.com', password='testpass', type='applicant')
+    with app.app_context():
+        db.session.add(deleteuser)
+        db.session.commit()
+
+    # Non-Admin tries to delete the user
+    response = client.post('/delete_user/deletetestuser')
+    assert response.status_code == 302  # As an unauthenticated user tries to access a protected page, they will be redirected (with a 302) to the login page.
+    
+    
+def test_non_admin_login_and_view_users(client):
+    """Test non admin logging in, viewing all users."""
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View users
+    response = client.get('/view-users')
+    assert response.status_code == 302    
+    
+    
+def test_non_admin_login_and_delete_review_failure(client):
+    """Test non admin logging in and not able to delete a review."""
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # Create a review to delete
+    review = Reviews(id=1,job_title='Test Job', job_description='Test Description', department='Test Department',
+                      locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review)
+        db.session.commit()
+
+    # Non-Admin tries to delete the review
+    response = client.post('/delete_review/1')
+    assert response.status_code == 302
+    
+
+def test_applicant_login_view_reviews(client):
+    """Test applicant logging in, viewing all reviews, and then deleting a specific review."""
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View reviews
+    response = client.get('/pageContent')
+    assert response.status_code == 200
+
+    
+def test_applicant_login_view_reviews_delete_review(client):
+    """Test applicant logging in, viewing all reviews, and then deleting a specific review."""
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='applicant')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View reviews
+    response = client.get('/pageContent')
+    assert response.status_code == 200
+
+    # Create a review to delete
+    review = Reviews(id=3,job_title='Test Job', job_description='Test Description', department='Test Department',
+                      locations='Test Location', hourly_pay=20, benefits='Test Benefits', review='Test Review', rating=5, recommendation=1)
+    with app.app_context():
+        db.session.add(review) 
+        db.session.commit()
+
+    # Delete the created review
+    response = client.post('/delete_review/3')
+    assert response.status_code == 302
+
+
+def test_employer_login_view_reviews(client):
+    """Test non admin logging in, viewing all reviews, and then deleting a specific review."""
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='employer')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View reviews
+    response = client.get('/pageContent')
+    assert response.status_code == 302
+    
+    
+def test_employer_login_view_reviews_delete_review(client):
+    """Test non admin logging in, viewing all reviews, and then deleting a specific review."""
+    user = User(user_name='regularuser', name='Valid User',
+                 email='valid@example.com', password='userpass', type='employer')
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+    # Non Admin logs in
+    response = client.post(
+        '/login', data={'username': 'regularuser', 'password': 'userpass'})
+    assert response.status_code == 302
+    assert response.location.endswith('/home')
+
+    # View reviews
+    response = client.get('/pageContent')
+    assert response.status_code == 302
+    
+
+def test_view_contact_route_employer(client):
+    """Test the contact route for an employer."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'regularuser'
+        sess['type'] = 'employer'
+    response = client.get('/contact')
+    assert response.status_code == 200    
+    
+def test_view_contact_route_applicant(client):
+    """Test the contact route for an applicant."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'regularuser'
+        sess['type'] = 'applicant'
+    response = client.get('/contact')
+    assert response.status_code == 200  
+    
+    
+def test_view_contact_route_admin(client):
+    """Test the contact route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/contact')
+    assert response.status_code == 200  
+        
+
+def test_view_about_us_route_employer(client):
+    """Test the About Us route for an employer."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'regularuser'
+        sess['type'] = 'employer'
+    response = client.get('/about')
+    assert response.status_code == 200    
+    
+def test_view_about_us_route_applicant(client):
+    """Test the view applicants route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'regularuser'
+        sess['type'] = 'applicant'
+    response = client.get('/about')
+    assert response.status_code == 200  
+    
+    
+def test_view_about_us_route_admin(client):
+    """Test the view applicants route for an admin."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'admin'
+        sess['type'] = 'admin'
+    response = client.get('/about')
+    assert response.status_code == 200          
