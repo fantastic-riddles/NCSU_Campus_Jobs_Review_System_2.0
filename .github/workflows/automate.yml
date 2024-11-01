@@ -1,0 +1,257 @@
+name: Program workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  autopep8:
+    name: Autopep8
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install autopep8
+
+      - name: Run autopep8
+        run: autopep8 --in-place --recursive /app/*
+
+  pylint:
+    name: Pylint
+    runs-on: ubuntu-latest
+    needs: autopep8
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+
+      - id: pylint
+        run: pylint /app/*
+        continue-on-error: true
+
+  radon:
+     name: Cyclomatic complexity
+     runs-on: ubuntu-latest
+     needs: [autopep8, pylint]
+     env:
+      PYTHONPATH: ${{ github.workspace }}
+     steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install radon
+
+      - id: radon
+        run: radon cc /app/* -a
+        continue-on-error: true
+
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    needs: [autopep8, pylint, radon]
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+
+      - run: |
+          pytest --cov=. --cov-report xml --cov-report term
+        continue-on-error: true
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+
+  generate-badges:
+    name: Generate Badges
+    runs-on: ubuntu-latest
+    needs: coverage
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+          python -m pip install --upgrade pip
+          pip install pylint pytest pytest-cov radon
+
+      - name: Generate badge URLs
+        id: generate_badges
+        run: |
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          # Construct job-specific URLs
+          pylint_url="${RUN_URL}/jobs/pylint"
+          coverage_url="${RUN_URL}/jobs/coverage"
+          radon_url="${RUN_URL}/jobs/radon"
+          tests_url="${RUN_URL}/jobs/coverage"
+
+          
+          radon_output=$(radon cc /app/* -a 2>&1) || true
+          radon_exit_code=$? 
+          echo "Radon exit code: $radon_exit_code"
+          echo "Radon output: $radon_output"
+
+          radon_score=$(echo "$radon_output" | grep -oP '(?<=Average complexity: [A-Z] \()\d+\.\d{2}' | tail -1)
+          radon_score=${radon_score:-0}
+          echo "Radon score: $radon_score"
+
+          exit_code_radon=1
+          if (( $(echo "$radon_score > 10" | bc -l) )) || [ $radon_exit_code -ne 0 ]; then
+            radon_color="red"
+            exit_code_radon=0
+          elif (( $(echo "$radon_score >= 5" | bc -l) )); then
+            radon_color="orange"
+            exit_code_radon=0
+          else
+            radon_color="green"
+          fi
+          radon_badge="https://img.shields.io/badge/radon_cc-${radon_score}-${radon_color}?link=${radon_url}"
+          echo "radon badge: $radon_badge"
+
+          
+          pylint_output=$(pylint /app/* 2>&1) || true
+          pylint_exit_code=$?
+          echo "Pylint exit code: $pylint_exit_code"
+          echo "Pylint output: $pylint_output"
+          
+          pylint_score=$(echo "$pylint_output" | grep -oP '(?<=rated at )\d+\.\d+' | tail -1)
+          pylint_score=${pylint_score:-0}
+          echo "Pylint score: $pylint_score"
+          
+          exit_code_pylint=1
+          if (( $(echo "$pylint_score < 5" | bc -l) )) || [ $pylint_exit_code -ne 0 ]; then
+            pylint_color="red"
+            exit_code_pylint=0
+          elif (( $(echo "$pylint_score < 10" | bc -l) )); then
+            pylint_color="orange"
+            exit_code_pylint=0
+          else
+            pylint_color="green"
+          fi
+          pylint_badge="https://img.shields.io/badge/pylint-${pylint_score}-${pylint_color}?link=${pylint_url}"
+          echo "Pylint badge: $pylint_badge"
+
+          pytest_output=$(pytest --cov=. --cov-report xml 2>&1) || true
+          exit_code_pytest=1
+          echo "Pytest exit code: $pytest_exit_code"
+          echo "Pytest output: $pytest_output"
+          
+          if [ -f coverage.xml ]; then
+            coverage=$(xmllint --xpath "string(//coverage/@line-rate)" coverage.xml)
+            coverage_percentage=$(echo "scale=0; $coverage * 100" | bc)
+            if (( $(echo "$coverage_percentage >= 97" | bc -l) )); then
+              coverage_color="green"
+            elif (( $(echo "$coverage_percentage >= 90" | bc -l) )); then
+              exit_code_pytest=0
+              coverage_color="orange"
+            else
+              exit_code_pytest=0
+              coverage_color="red"
+            fi
+          else
+            coverage_percentage="50"
+            coverage_color="orange"
+          fi
+          coverage_badge="https://img.shields.io/badge/coverage-${coverage_percentage}%25-${coverage_color}?link=${coverage_url}"
+          echo "Coverage badge: $coverage_badge"
+
+          if echo "$pytest_output" | grep -q "FAILURES"; then
+            test_status="failing"
+            test_color="red"
+          else
+            test_status="passing"
+            test_color="green"
+          fi
+          test_badge="https://img.shields.io/badge/tests-${test_status}-${test_color}?link=${tests_url}"
+          echo "Test badge: $test_badge"
+
+          
+          # Save badge URLs to the environment
+          echo "pylint_badge=$pylint_badge" >> $GITHUB_ENV
+          echo "coverage_badge=$coverage_badge" >> $GITHUB_ENV
+          echo "test_badge=$test_badge" >> $GITHUB_ENV
+          echo "radon_badge=$radon_badge" >> $GITHUB_ENV
+
+      - name: Update README with badges
+        env:
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          sed -i '/\[cov\]/c\[![cov](${{ env.coverage_badge }})](${{ env.RUN_URL }})' README.md
+          sed -i '/\[Pylint\]/c\[![Pylint](${{ env.pylint_badge }})](${{ env.RUN_URL }})' README.md
+          sed -i '/\[Tests\]/c\[![Tests](${{ env.test_badge }})](${{ env.RUN_URL }})' README.md
+          sed -i '/\[Radon\]/c\[![Radon](${{ env.radon_badge }})](${{ env.RUN_URL }})' README.md
+          
+
+      - name: Commit and push changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: RMV
+          author_email: RMV@example.com
+          message: Update badges in README
+
+  check-status:
+    name: Check Status
+    needs: [generate-badges]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check job status
+        run: |
+          for prog in pylint pytest radon; do
+            EXIT_CODE_VAR="exit_code_${prog}"
+            EXIT_CODE="${!EXIT_CODE_VAR}"
+            echo "Checking exit code for $prog: $EXIT_CODE"
+            if [ "$EXIT_CODE" == 0 ]; then
+              echo "$prog failed, marking job as failed."
+              exit 1
+            fi
+          done
