@@ -131,6 +131,8 @@ def review():
     """
     An API for the user review page, which helps the user to add reviews
     """
+    if session.get('type') == 'employer':
+        return redirect(url_for('home'))
     entries = Reviews.query.all()
     return render_template('review-page.html', entries=entries)
 
@@ -139,6 +141,8 @@ def review():
 @login_required
 def page_content():
     """An API for the user to view all the reviews entered"""
+    if session.get('type') == 'employer':
+        return redirect(url_for('home'))
     entries = Reviews.query.all()
     return render_template('page_content.html', entries=entries)
 
