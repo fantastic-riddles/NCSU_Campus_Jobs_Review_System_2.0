@@ -64,6 +64,7 @@ The NCSU Campus Job Review System is a dynamic Flask application designed to emp
 
 To run these scripts, you will need Python installed on your PC. Please visit [Python Installers](https://www.python.org/downloads/) to download the latest version of Python. 
 
+
 Alternatively, if you just want to play around with the application without installing Python, you can use the provided Docker image. This allows you to run the application in a containerized environment.
 
 #### Option 1: Running Locally with Python
