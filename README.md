@@ -20,15 +20,15 @@ Empower Your Future: Find Your Campus Opportunity with NCSU!
 
 <div align="center">
   
-  [![cov](https://img.shields.io/badge/coverage-100%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
+[![cov](https://img.shields.io/badge/coverage-.705600%25-red?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958)
   [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/main/LICENSE)
   [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/graphs/contributors)
   [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
   [![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/issues)
   [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
-  <img alt="Actions Status" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/workflows/Test/badge.svg">
-  [![Radon](https://img.shields.io/badge/radon_cc-3.33-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
-  [![Pylint](https://img.shields.io/badge/pylint-10.00-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11096402104)
+[![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958)
+[![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958)
+[![Pylint](https://img.shields.io/badge/pylint-6.01-orange?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638702958)
   ![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
   [![DOI](https://zenodo.org/badge/865713529.svg)](https://doi.org/10.5281/zenodo.14026618)
   ![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
