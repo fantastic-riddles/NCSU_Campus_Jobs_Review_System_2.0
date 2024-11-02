@@ -60,7 +60,8 @@ The NCSU Campus Job Review System is a dynamic Flask application designed to emp
 <br>
 
 ### Why use our application?
-[![Watch the Demo](app/static/logo-transformed.png)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/main/app/static/NCSU_CAMPUS_JOB_REVIEW_VIDEO.mp4)
+[![Watch the Demo on YouTube](https://i9.ytimg.com/vi/D8kcTJBJ-TA/mqdefault.jpg?sqp=CMjVlrkG-oaymwEmCMACELQB8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgWyhJMA8=&rs=AOn4CLBwCL62F_hC8-fGzH3Ov4uWhIhhSw)](https://youtu.be/D8kcTJBJ-TA)
+
 
 ### Documentation <img src="https://repository-images.githubusercontent.com/163785224/b132d200-de4c-11ea-9e51-20d2ca497da7" alt="Pdoc" width="90"/>
 
