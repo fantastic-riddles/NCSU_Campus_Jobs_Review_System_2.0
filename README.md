@@ -26,7 +26,7 @@ Empower Your Future: Find Your Campus Opportunity with NCSU!
   [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
   [![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/issues)
   [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
-  <img alt="Actions Status" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/workflows/Test/badge.svg">
+[![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638499951/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638499951)
 [![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638499951/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638499951)
 [![Pylint](https://img.shields.io/badge/pylint-5.97-orange?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638499951/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11638499951)
   ![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
