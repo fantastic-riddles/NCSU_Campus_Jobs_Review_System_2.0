@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NCSU Job Review System - Login</title>
+  </head>
+  <body>
+    {% block content %}
+    <div>
+      {% if error %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <p>{{error}}</p>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endif %}
+      <div
+        class="w-50 mt-4 mx-auto border border-2 shadow p-4 rounded bg-white opacity-75"
+      >
+        <h2>Login</h2>
+        <form class="row g-3 needs-validation" validate method="POST">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <button class="btn btn-danger" type="submit">Log In</button>
+          </div>
+        </form>
+        <span class="text-center">
+          Don't have an account?
+          <a href="{{ url_for('signup') }}" class="text--danger">Sign up here</a>
+        </span>
+      </div>
+    </div>
+  </body>
+  {% endblock %}
+  <script>
+    (() => {
+      "use strict";
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll(".needs-validation");
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach((form) => {
+        form.addEventListener(
+          "submit",
+          (event) => {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    })();
+  </script>
+</html>

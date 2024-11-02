@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NCSU Campus Job</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
+<body>
+    {% block content %}
+    <div class="container mt-5">
+        <div class="card mx-auto" style="max-width: 600px;">
+            <div class="card-header text-center" style="background-color: #ff4d4d; color: white;">
+                <h3>Post a New Job</h3>
+            </div>
+            <div class="card-body p-4">
+
+                <!-- Display flash messages if any -->
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-success">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('add_job') }}">
+                    <div class="form-group">
+                        <label for="title">Job Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Job Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="location" name="location" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pay">Salary ($)</label>
+                        <input type="number" class="form-control" id="pay" name="pay" step="0.01" value="12500.00" placeholder="12500.00">
+                    </div>                    
+
+                    <button type="submit" class="btn btn-block" style="background-color: #ff4d4d; color: white;">Post Job</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

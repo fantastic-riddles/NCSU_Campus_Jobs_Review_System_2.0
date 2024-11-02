@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 text-white">
+  <h1 class="text-center mb-4">About Us</h1>
+  <p class="lead text-justify">
+    The <strong>NCSU Campus Job Review System</strong> is a web-based tool created with Flask and SQL to facilitate the sharing and access of job reviews for different on-campus employment possibilities among NC State University students. The website guarantees the confidentiality of reviewers, enabling students to offer candid assessments of the job setting, duties, and overall experience. This approach aims to help students by providing insightful information about the roles they are considering, allowing them to make well-informed judgments about part-time job options on campus.
+  </p>
+  
+  <h2 class="mt-4">System Features</h2>
+  <ul>
+    <li>
+      <strong>Secure User Accounts:</strong> The system enables students to securely create accounts and submit anonymous reviews for on-campus jobs, ensuring only authenticated users can post while maintaining privacy.
+    </li>
+    <li>
+      <strong>Review Browsing:</strong> Students can browse reviews from peers, gaining insights into various job roles.
+    </li>
+    <li>
+      <strong>SQL Database Integration:</strong> User accounts, reviews, and job information are efficiently managed, ensuring data security and smooth performance.
+    </li>
+    <li>
+      <strong>Test Cases:</strong> While the current implementation includes six test cases, we plan to expand this to 50 test cases to further enhance the system’s robustness and reliability.
+    </li>
+  </ul>
+
+  <h2 class="mt-4">Admin and Moderation</h2>
+  <p>
+    An admin interface allows moderators to ensure that the content posted on the platform meets guidelines. Admins can remove inappropriate reviews or flag problematic content. They have special permissions within the system, allowing them to review content before it is publicly displayed, ensuring the quality of information and adherence to guidelines.
+  </p>
+
+  <h2 class="mt-4">Employer Job Postings</h2>
+  <p>
+    The <strong>Employer Account</strong> functionality enables companies to create, manage, and maintain an account on the platform, allowing them to post and track job vacancies. This feature is designed to streamline the recruitment process, giving employers a comprehensive tool to post openings, review applications, and manage job listings.
+  </p>
+
+  <h2 class="mt-4">Apply to Open Job Postings</h2>
+  <p>
+    The <strong>Applicant Job Application</strong> feature allows job seekers to easily browse, search, and apply for open job vacancies posted by employers on the platform. It provides a user-friendly and efficient process for candidates to find suitable job opportunities and submit their applications. Additionally, applicants can track the status of their submissions, ensuring a transparent and organized job application experience.
+  </p>
+
+  <p class="mt-4">
+    The <strong>NC State Campus Jobs Review System</strong> allows students to securely log in, submit anonymous job reviews, and browse feedback on various on-campus jobs. The system uses a SQL database to manage reviews, user accounts, and job details, ensuring data security. It provides a simple and reliable way for students to make informed decisions about campus employment opportunities.
+  </p>
+</div>
+{% endblock %}

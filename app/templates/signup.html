@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NCSU Job Review System - Signup</title>
+  </head>
+  <body>
+    {% block content %}
+    <div>
+      {% if error %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <p>{{error}}</p>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endif %}
+      <div class="w-50 mx-auto border border-2 shadow p-4 rounded bg-white opacity-75">
+        <h2>Signup</h2>
+        <form class="row g-3 needs-validation" validate method="POST">
+          <div class="col-12">
+            <label for="full-name" class="form-label">Full name</label>
+            <input type="text" class="form-control" name="full-name" required />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="col-12">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" required />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="col-12">
+            <label for="username" class="form-label">Username</label>
+            <div class="input-group has-validation">
+              <span class="input-group-text" id="inputGroupPrepend">@</span>
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                aria-describedby="inputGroupPrepend"
+                required
+              />
+              <div class="invalid-feedback">Please choose a username.</div>
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <label for="type" class="form-label">Role</label>
+            <select class="form-select" name="type" required>
+              <option selected disabled value="">Choose...</option>
+              <option value="applicant">Applicant</option>
+              <option value="employer">Employer</option>
+            </select>
+            <div class="invalid-feedback">Please select a valid role.</div>
+          </div>
+          <div class="col-12">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="invalidCheck"
+                required
+              />
+              <label class="form-check-label" for="invalidCheck">
+                Agree to terms and conditions
+              </label>
+              <div class="invalid-feedback">
+                You must agree before submitting.
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-danger" type="submit">Sign Up</button>
+          </div>
+        </form>
+        <p class="text-center">
+          Already have an account?
+          <a href="{{ url_for('login') }}" class="text-danger">Log in here</a>
+        </p>
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+  <script>
+    (() => {
+      "use strict";
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll(".needs-validation");
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach((form) => {
+        form.addEventListener(
+          "submit",
+          (event) => {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    })();
+  </script>
+</html>
