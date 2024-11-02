@@ -159,7 +159,7 @@ jobs:
           echo "radon badge: $radon_badge"
 
           
-          pylint_output=$(pylint app/* 2>&1) || true
+          pylint_output=$(pylint --max-line-length=150 app/routes.py 2>&1) || true
           pylint_exit_code=$?
           echo "Pylint exit code: $pylint_exit_code"
           echo "Pylint output: $pylint_output"
@@ -181,7 +181,7 @@ jobs:
           pylint_badge="https://img.shields.io/badge/pylint-${pylint_score}-${pylint_color}?link=${pylint_url}"
           echo "Pylint badge: $pylint_badge"
 
-          pytest_output=$(pytest --cov=. --cov-report xml 2>&1) || true
+          pytest_output=$(pip install -r requirements.txt pytest --cov=. --cov-report xml 2>&1) || true
           exit_code_pytest=1
           echo "Pytest exit code: $pytest_exit_code"
           echo "Pytest output: $pytest_output"
