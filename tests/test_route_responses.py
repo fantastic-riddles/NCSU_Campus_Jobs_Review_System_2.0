@@ -1,12 +1,13 @@
 import pytest
 import os
 import sys
+import warnings
 
 sys.path.append(os.getcwd())
 from app import db, app
 from app.models import User, Job, Application, Reviews
 from crudapp import *
-
+warnings.filterwarnings('ignore')
 
 @pytest.fixture
 def client():
