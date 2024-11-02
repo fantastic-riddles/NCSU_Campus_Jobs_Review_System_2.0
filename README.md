@@ -85,11 +85,11 @@ Alternatively, if you just want to play around with the application without inst
 1. Make sure you have [Docker](https://www.docker.com/get-started) installed on your machine.
 2. Pull the Docker image using the following command:
    ```bash
-   docker pull your-docker-image-name
+   docker pull vihar2712/ncsu-campus-jobs:latest
    ```
 3. Run the Docker container:
-  ```docker run -p 8000:8000 your-docker-image-name```
-4. Access the application at ```http://localhost:8000```
+  ```docker run -it -p 5000:5000 -e EMAIL_API_KEY=your_api_key_here -e EMAIL_ADDRESS=sender_email vihar2712/ncsu-campus-jobs:latest```
+4. Access the application at ```http://127.0.0.1:5000/```
 
 <br>
 <br>
