@@ -23,12 +23,12 @@ Routes:
 
 Each route interacts with the database, managing user sessions, and displays specific templates.
 """
-
+from app.inappropriate_words import badwords
 from functools import wraps
 from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db
-from app.email_notification import send_welcome_email
-from app.models import Reviews, User, Job, Application
+from app.email_notification import send_welcome_email, send_new_job_email
+from app.models import Reviews, User, Job, Application,Upvote
 
 
 
@@ -54,6 +54,31 @@ def default():
     """
     return redirect(url_for('home'))
 
+@app.route('/upvote/<int:review_id>', methods=['POST'])
+@login_required
+def upvote_review(review_id):
+    """Allow a user to upvote a review"""
+    user_name = session.get('username')
+
+    # Check if the user has already upvoted this review
+    existing_upvote = Upvote.query.filter_by(review_id=review_id, user_name=user_name).first()
+    
+    if existing_upvote:
+        flash('You have already upvoted this review.')
+        return redirect(url_for('page_content'))
+
+    # Add an upvote entry
+    new_upvote = Upvote(review_id=review_id, user_name=user_name)
+    db.session.add(new_upvote)
+
+    # Increment the review's upvote count
+    review = Reviews.query.get(review_id)
+    if review:
+        review.upvote_count += 1
+        db.session.commit()
+        flash('Upvoted successfully!')
+    
+    return redirect(url_for('page_content'))
 
 @app.route('/login', methods=['GET', 'POST'])  # Route for handling the login page logic
 def login():
@@ -182,11 +207,15 @@ def add():
     review_sample = form.get('review')
     rating = form.get('rating')
     recommendation = form.get('recommendation')
-
+    inappropriate_words_list=badwords()
+    filtered_review = ' '.join(
+    word for word in review_sample.split()
+    if word.lower() not in inappropriate_words_list
+)   
     entry = Reviews(job_title=title, job_description=description,
                     department=department, locations=locations,
                     hourly_pay=hourly_pay, benefits=benefits,
-                    review=review_sample, rating=rating,
+                    review=filtered_review, rating=rating,
                     recommendation=recommendation)
     db.session.add(entry) # pylint: disable=no-member
     db.session.commit() # pylint: disable=no-member
@@ -238,7 +267,12 @@ def add_job():
         db.session.add(new_job) # pylint: disable=no-member
         db.session.commit() # pylint: disable=no-member
 
+        # Fetch all email addresses from the 'users' table
+        emails = [user.email for user in User.query.with_entities(User.email).all()]
+
         flash("Job posted successfully!")
+        for email in emails:
+            send_new_job_email(email, title, description, location, pay)
         return redirect(url_for('home'))
 
     return render_template('add_job.html')

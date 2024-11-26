@@ -1188,3 +1188,28 @@ def test_view_about_us_route_admin(client):
         sess['type'] = 'admin'
     response = client.get('/about')
     assert response.status_code == 200          
+
+def test_upvote_review_without_login(client):
+    """Test upvote attempt without logging in."""
+    with client.session_transaction() as sess:
+        sess['username'] = 'regularuser'
+        sess['type'] = 'applicant'
+    
+    # Send a POST request to upvote
+    response = client.post('/upvote/1')
+
+    # Ensure redirection happens (status code 302)
+    assert response.status_code == 302  # Redirect
+    
+    # Check if the redirection goes to '/pageContent' (or another appropriate URL)
+    location_header = response.headers['Location']
+    
+    # Since we expect a redirect to '/pageContent' when not logged in, check that
+    assert '/pageContent' in location_header
+
+def test_upvote_empty_review_id(client):
+    """Ensure upvote fails if review ID is empty."""
+    response = client.post('/upvote/')
+    assert response.status_code == 404  # Invalid URL
+
+

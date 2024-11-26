@@ -17,7 +17,18 @@ class Reviews(db.Model):
     review = db.Column(db.String(120), index=True, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     recommendation = db.Column(db.Integer, nullable=False)
-    
+    upvote_count = db.Column(db.Integer, default=0)
+
+
+class Upvote(db.Model):
+    """Model to track user upvotes on reviews"""
+    id = db.Column(db.Integer, primary_key=True)
+    review_id = db.Column(db.Integer, ForeignKey('reviews.id'), nullable=False)
+    user_name = db.Column(db.String(10), ForeignKey('users.user_name'), nullable=False)
+
+    # Ensure a user can upvote a review only once
+    __table_args__ = (db.UniqueConstraint('review_id', 'user_name', name='_review_user_uc'),)
+     
 class User(db.Model):
     __tablename__ = 'users'
     user_name = db.Column(db.String(10), nullable=False, primary_key=True)
