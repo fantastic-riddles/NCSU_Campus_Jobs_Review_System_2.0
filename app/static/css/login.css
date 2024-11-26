@@ -1,0 +1,125 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 63vh;
+    padding: 20px;
+  }
+  
+  .login-form-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    opacity: 0.98;
+  }
+  
+  /* Header Styles */
+  h2 {
+    text-align: center;
+    color: #b03a2e; /* Dark red color for the header */
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: 600;
+  }
+  
+  /* Form Styles */
+  .form-label {
+    font-size: 14px;
+    color: #c0392b; /* Red color for labels */
+    margin-bottom: 8px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e6b0b0; /* Light red border */
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background-color: #f9fafb;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .form-control:focus {
+    border-color: #e74c3c; /* Medium red color on focus */
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.2); /* Soft red glow on focus */
+    outline: none;
+  }
+  
+  .btn-primary {
+    width: 100%;
+    background-color: #e74c3c; /* Strong red color for the button */
+    color: #fff;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-primary:hover {
+    background-color: #c0392b; /* Darker red on hover */
+  }
+  
+  /* Error Alert Styles */
+  .alert {
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #f2dede; /* Soft red background for alerts */
+    border: 1px solid #e6b0b0; /* Light red border for alerts */
+    color: #c0392b; /* Dark red text */
+    border-radius: 8px;
+  }
+  
+  .alert p {
+    margin: 0;
+  }
+  
+  .alert .btn-close {
+    background: none;
+    border: none;
+    color: #c0392b; /* Dark red close button */
+    font-size: 18px;
+  }
+  
+  /* Sign-Up Link */
+  .signup-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .signup-link a {
+    color: #e74c3c; /* Red color for the sign-up link */
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .signup-link a:hover {
+    color: #c0392b; /* Darker red on hover for the link */
+    text-decoration: underline;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .login-form-container {
+      padding: 25px;
+    }
+  
+    .form-control, .btn-primary {
+      font-size: 14px;
+    }
+  }
+  
