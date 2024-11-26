@@ -4,8 +4,7 @@ Empower Your Future: Find Your Campus Opportunity with NCSU!
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/logo-transformed.png">
-    <img alt="vLLM" src="https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/app/static/logo-transformed.png" height=30% width=50%>
+    <img alt="logo" src="./app/static/logo-transformed.png" height=30% width=50%>
   </picture>
 </p>
 
@@ -20,18 +19,18 @@ Empower Your Future: Find Your Campus Opportunity with NCSU!
 
 <div align="center">
   
-[![cov](https://img.shields.io/badge/coverage-98.6900%25-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
-  [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/main/LICENSE)
-  [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/graphs/contributors)
-  [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
-  [![Open Issues](https://img.shields.io/github/issues/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/issues)
-  [![GitHub Repo Size](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
-[![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
-[![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/radon)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
-[![Pylint](https://img.shields.io/badge/pylint-9.66-orange?link=https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/pylint)](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+  [![codecov](https://codecov.io/gh/bhandariprerak/ncsu-campus-jobs-review-system/graph/badge.svg?token=TJ3AXJRQSE)](https://codecov.io/gh/bhandariprerak/ncsu-campus-jobs-review-system)
+  [![License](https://img.shields.io/badge/License-MIT-purple.svg?style=flat)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/main/LICENSE)
+  [![Collaborators](https://img.shields.io/badge/Collaborators-3-orange.svg?style=flat)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/graphs/contributors)
+  [![Language](https://img.shields.io/badge/Language-Python-blue.svg?style=flat)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/search?l=python)
+  [![Open Issues](https://img.shields.io/github/issues/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/issues)
+  [![GitHub Repo Size](https://img.shields.io/github/repo-size/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0.svg)](https://img.shields.io/github/repo-size/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0.svg)
+[![Tests](https://img.shields.io/badge/tests-passing-green?link=https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/coverage)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+[![Radon](https://img.shields.io/badge/radon_cc-2.03-green?link=https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/radon)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
+[![Pylint](https://img.shields.io/badge/pylint-9.66-orange?link=https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138/jobs/pylint)](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/actions/runs/11639944138)
   ![Autopep8](https://img.shields.io/badge/autopep8-passing-brightgreen)
   [![DOI](https://zenodo.org/badge/865713529.svg)](https://doi.org/10.5281/zenodo.14026618)
-  ![GitHub forks](https://img.shields.io/github/forks/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.svg)
+  ![GitHub forks](https://img.shields.io/github/forks/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0.svg)
 
 </div>
 
@@ -45,10 +44,13 @@ The NCSU Campus Job Review System is a dynamic Flask application designed to emp
 
 #### Key Enhancements
 
-- **User-Friendly Reviews**: Students can anonymously submit and read reviews about various on-campus jobs, fostering a transparent environment for honest feedback.
+- **User-Friendly Reviews**: Users can anonymously submit and read reviews about various on-campus jobs, fostering a transparent environment for honest feedback.
+- **Upvote Reviews**: Users can upvote a review, fostering a helpful and transparent environment for everybody.
+- **Safe Review**: Reviews posted by users are filtered and inappropriate words (if any) present in them are removed. This keeps a clean and safe platform to share reviews.
 - **Enhanced Accessibility**: The application is hosted on Platform Render, ensuring easy access for all users.
 - **Dockerized for Deployment**: With a containerized setup using Docker, the application is easy to deploy and manage, streamlining updates and maintenance.
 - **Email Notifications**: New users receive a welcome email with their credentials upon signing up, ensuring a smooth onboarding process.
+- **Job Alerts**: Users receive a job alert email every time a new job is posted to keep them updated with latest postings.
 - **Secure Login and Signup**: A robust login and signup system protects user information while maintaining security.
 - **Job Application Feature**: Users can apply for jobs directly through the platform, simplifying the process of securing employment.
 - **Employer Interface**: Employers can post job openings and manage applications efficiently through a dedicated employer page.
@@ -59,7 +61,7 @@ The NCSU Campus Job Review System is a dynamic Flask application designed to emp
 <br>
 <br>
 
-### Why use our application?
+### Why use our application? # TODO: change this link
 [![Watch the Demo on YouTube](https://i9.ytimg.com/vi/D8kcTJBJ-TA/mqdefault.jpg?sqp=CMjVlrkG-oaymwEmCMACELQB8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgWyhJMA8=&rs=AOn4CLBwCL62F_hC8-fGzH3Ov4uWhIhhSw)](https://youtu.be/D8kcTJBJ-TA)
 
 
@@ -67,7 +69,7 @@ The NCSU Campus Job Review System is a dynamic Flask application designed to emp
 
 Comprehensive documentation is available to guide you through setup, usage, and troubleshooting. It includes detailed information on features, APIs, and best practices to help you make the most of this project.
 
-[Access the full documentation here.](https://rmv-se-510.github.io/NCSU_Campus_Jobs_Review_System_2.0/app/models.html)
+[Access the full documentation here.](https://fantastic-riddles.github.io/NCSU_Campus_Jobs_Review_System_2.0/app/models.html)
 
 <br>
 <br>
@@ -106,7 +108,7 @@ To check whether you have python installed or not, you can open CMD or a Termina
 
 If this is not the case, then you need to download python installer package from [Python Installers](https://www.python.org/downloads/) based on your system's operating system and install it and you can further clone this repository to execute the scripts.
 
-You can refer [INSTALL.md](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/INSTALL.md) for the complete installation steps based on your OS.
+You can refer [INSTALL.md](https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/blob/feature/readme-badges/INSTALL.md) for the complete installation steps based on your OS.
 
 <br>
 <br>
@@ -174,7 +176,7 @@ To use SendGrid for sending emails, you'll need to create an API key. Follow the
 If you haven’t already, clone the application repository to your local machine.
 
 ```bash
-git clone https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0.git
+git clone https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0.git
 cd NCSU_Campus_Jobs_Review_System_2.0
 ```
 
@@ -221,10 +223,10 @@ Once the container is running, you can access the application by navigating to `
 
 We'd like to thank the following contributors for their valuable input and enhancements to this project:
 
-- [Meet Vora](https://github.com/your-profile)
-- [Raj Patel](https://github.com/contributor-profile)
-- [Vihar Shah](https://github.com/another-contributor-profile)
+- [Prerak Bhandari](https://github.com/bhandariprerak)
+- [Akshat Shah](https://github.com/akshatrshah)
+- [Dhairya Shah](https://github.com/scooby3000)
 
 #### Acknowledgements
 
-This project was forked from [NCSU CAMPUS JOBS REVIEW SYSTEM](https://github.com/ashishjoshi2605/ncsu-campus-jobs-review-system) and has been enhanced with additional features and improvements. Special thanks to the original authors for their foundational work.
+This project was forked from [NCSU CAMPUS JOBS REVIEW SYSTEM](https://github.com/Rmv-se-510/NCSU_Campus_Jobs_Review_System_2.0) and has been enhanced with additional features and improvements. Special thanks to the original authors for their foundational work.
