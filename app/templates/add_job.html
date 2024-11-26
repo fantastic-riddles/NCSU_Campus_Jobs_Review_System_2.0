@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NCSU Campus Job</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-</head>
-<body>
     {% block content %}
+
+    <title>NCSU Campus Job</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/add_job.css')}}"/>
     <div class="container mt-5">
         <div class="card mx-auto" style="max-width: 600px;">
             <div class="card-header text-center" style="background-color: #ff4d4d; color: white;">
                 <h3>Post a New Job</h3>
             </div>
             <div class="card-body p-4">
-
                 <!-- Display flash messages if any -->
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -53,5 +45,4 @@
         </div>
     </div>
     {% endblock %}
-</body>
-</html>
+
