@@ -5,67 +5,66 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
-        <form class="filter" action="/pageContentPost" method="post">
-          <input type="text" placeholder="Search.." name="search">
-          <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
-        <br><br>
-        <div style="background-color: white;">
-            <table class="sortable table table-hover">
-                <thead>
-                    <tr>
-                        <th>Job Title</th>
-                        <th>Job Description</th>
-                        <th>Department</th>
-                        <th>Location(s)</th>
-                        <th>Hourly Pay</th>
-                        <th>Employee Benefits</th>
-                        <th>Review</th>
-                        <th>Rating</th>
-                        <th>Recommendation</th>
-                        {% if session['type'] == 'admin' %}
-                        <th>Delete</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in entries %}
+<form class="filter" action="/pageContentPost" method="post">
+  <input type="text" placeholder="Search.." name="search">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+<br><br>
+<div id="tablediv" style="background-color: white;">
+    <table class="sortable table table-hover">
+        <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>Job Description</th>
+                <th>Department</th>
+                <th>Location(s)</th>
+                <th>Hourly Pay</th>
+                <th>Employee Benefits</th>
+                <th>Review</th>
+                <th>Rating</th>
+                <th>Recommendation</th>
+                <th>Upvotes</th>  <!-- New Column for Upvotes -->
+                {% if session['type'] == 'admin' %}
+                <th>Delete</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in entries %}
+            <tr>
+                <td><strong>{{ entry.job_title }}</strong></td>
+                <td>{{ entry.job_description }}</td>
+                <td>{{ entry.department }}</td>
+                <td>{{ entry.locations }}</td>
+                <td>{{ entry.hourly_pay }}</td>
+                <td>{{ entry.benefits }}</td>
+                <td>{{ entry.review }}</td>
+                <td>{{ entry.rating }}</td>
+                <td>{{ entry.recommendation }}</td>
+                <td>
+                    <!-- Display the number of upvotes -->
+                    <span>{{ entry.upvote_count }}</span> 
 
-                    <tr>
-                        <td><strong>{{ entry.job_title }}</strong></td>
-                        <td>{{ entry.job_description }}</td>
-                        <td>{{ entry.department }}</td>
-                        <td>{{ entry.locations }}</td>
-                        <td>{{ entry.hourly_pay }}</td>
-                        <td>{{ entry.benefits }}</td>
-                        <td>{{ entry.review }}</td>
-                        <td>{{ entry.rating }}</td>
-                        <td>{{ entry.recommendation }}</td>
-                        {% if session['type'] == 'admin' %}
-                        <td>
-                            <form action="{{ url_for('delete_review', review_id=entry.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                        {% endif %}
-                        <!-- <td>
-                            <a class="{{ 'btn btn-success' if entry.status else 'btn btn-dark'}}"
-                               href="/turn/{{ entry.id }}">
-                                Turn Status
-                            </a>
-                            <a class="btn btn-danger"
-                               href="/delete/{{ entry.id }}">
-                                Delete
-                            </a>
-                            <a class="btn btn-info"
-                               href="/update/{{ entry.id }}">
-                                Edit
-                            </a>
-                        </td> -->
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-            </table>
-        </div>
+                    <!-- Upvote Button -->
+                    {% if not entry.has_upvoted %}
+                    <form action="{{ url_for('upvote_review', review_id=entry.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">Upvote</button>
+                    </form>
+                    {% else %}
+                    <span>You have upvoted this review</span>
+                    {% endif %}
+                </td>
+                {% if session['type'] == 'admin' %}
+                <td>
+                    <form action="{{ url_for('delete_review', review_id=entry.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
