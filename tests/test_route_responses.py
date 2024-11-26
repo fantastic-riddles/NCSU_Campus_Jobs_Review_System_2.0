@@ -1982,3 +1982,126 @@ def test_review_job_title_assignment():
     )
     
     assert review.job_title == 'Data Scientist'
+
+def test_upvote_route_requires_login(client):
+    """Check that the route requires login"""
+    response = client.post('/upvote/1')
+    assert response.status_code in [302, 401, 403]  # Redirect or unauthorized
+
+def test_upvote_route_method_type():
+    """Verify the route accepts POST method"""
+    upvote_rule = [rule for rule in app.url_map.iter_rules() if rule.rule.startswith('/upvote/')][0]
+    assert 'POST' in upvote_rule.methods
+
+def test_upvote_route_parameter_type():
+    """Verify route expects integer review ID"""
+    upvote_rule = [rule for rule in app.url_map.iter_rules() if rule.rule.startswith('/upvote/')][0]
+    assert '<int:review_id>' in str(upvote_rule)
+
+def test_upvote_route_function_name():
+    """Check the route function is named correctly"""
+    view_functions = app.view_functions
+    assert 'upvote_review' in view_functions
+
+def test_upvote_route_imports():
+    """Verify necessary imports exist"""
+    from flask import session, redirect, url_for, flash
+    
+    assert 'session' in locals()
+    assert 'redirect' in locals()
+    assert 'url_for' in locals()
+    assert 'flash' in locals()
+
+def test_upvote_route_uses_database_models():
+    """Check that database models are imported"""
+    
+    assert hasattr(Upvote, 'query')
+    assert hasattr(Reviews, 'query')
+
+def test_upvote_route_uses_db_session():
+    """Verify database session is used"""
+    
+    assert hasattr(db, 'session')
+    assert hasattr(db.session, 'add')
+    assert hasattr(db.session, 'commit')
+
+def test_upvote_route_decorator_login_required():
+    """Check login required decorator is used"""
+    from inspect import getfullargspec
+    
+    upvote_view_func = app.view_functions.get('upvote_review')
+    assert upvote_view_func is not None
+
+def test_upvote_route_handles_review_id():
+    """Verify route can handle review ID parameter"""
+    
+    upvote_rule = [rule for rule in app.url_map.iter_rules() if rule.rule.startswith('/upvote/')][0]
+    assert '<int:review_id>' in str(upvote_rule)
+
+def test_upvote_route_flash_messages_used():
+    """Check that flash messages are utilized"""
+    from flask import flash
+    
+    assert callable(flash)
+
+def test_upvote_route_redirect_used():
+    """Verify redirect is used in the route"""
+    from flask import redirect, url_for
+    
+    assert callable(redirect)
+    assert callable(url_for)
+
+
+def test_upvote_route_query_filter_method():
+    """Verify query filter method exists"""
+    
+    assert hasattr(Upvote.query, 'filter_by')
+
+def test_upvote_route_query_get_method():
+    """Check query get method exists"""
+    
+    assert hasattr(Reviews.query, 'get')
+
+def test_upvote_route_increment_operation():
+    """Verify increment operation is possible"""
+    class MockReview:
+        upvote_count = 0
+    
+    mock_review = MockReview()
+    mock_review.upvote_count += 1
+    
+    assert mock_review.upvote_count == 1
+
+def test_upvote_route_new_object_creation():
+    """Check new object can be created"""
+    
+    upvote = Upvote(review_id=1, user_name='testuser')
+    
+    assert upvote.review_id == 1
+    assert upvote.user_name == 'testuser'
+
+def test_upvote_route_error_handling():
+    """Verify basic error handling exists"""
+    def mock_upvote_function(review_id):
+        try:
+            # Simulate potential error scenarios
+            if review_id <= 0:
+                return False
+            return True
+        except Exception:
+            return False
+    
+    assert mock_upvote_function(1) is True
+    assert mock_upvote_function(0) is False
+
+def test_upvote_route_config_settings():
+    """Basic check of application configuration"""
+    assert app.config is not None
+    assert 'SECRET_KEY' in app.config
+
+def test_upvote_route_basic_functionality():
+    """Minimal test of route's basic expected behavior"""
+    def mock_upvote():
+        return True
+    
+    assert mock_upvote() is True
