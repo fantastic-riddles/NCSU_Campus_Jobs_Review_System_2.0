@@ -1,0 +1,13 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Prerak"
+  given-names: "Bhandari"
+- family-names: "Akshat"
+  given-names: "Shah"
+- family-names: "Dhairya"
+  given-names: "Shah"
+title: "NCSU Campus Job Review System 3.0"
+version: 1.0.0
+date-released: 2024-11-26
+url: "https://github.com/fantastic-riddles/NCSU_Campus_Jobs_Review_System_2.0/tree/1.0"
