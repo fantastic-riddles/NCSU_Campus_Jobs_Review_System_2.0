@@ -5,13 +5,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
-<form class="filter" action="/pageContentPost" method="post">
-  <input type="text" placeholder="Search.." name="search">
-  <button type="submit"><i class="fa fa-search"></i></button>
+<!-- Search bar with JS functionality -->
+<form class="filter">
+  <input type="text" placeholder="Search by Job Title.." id="searchInput" oninput="filterTable()">
+  <button type="button" onclick="filterTable()"><i class="fa fa-search"></i></button>
 </form>
 <br><br>
 <div id="tablediv" style="background-color: white;">
-    <table class="sortable table table-hover">
+    <table id="jobTable" class="sortable table table-hover">
         <thead>
             <tr>
                 <th>Job Title</th>
@@ -66,5 +67,25 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('jobTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            const jobTitleCell = rows[i].getElementsByTagName('td')[0]; // First column
+            if (jobTitleCell) {
+                const jobTitle = jobTitleCell.textContent || jobTitleCell.innerText;
+                if (jobTitle.toLowerCase().indexOf(input) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    }
+</script>
 
 {% endblock %}
