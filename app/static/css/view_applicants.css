@@ -1,0 +1,99 @@
+/* view_applicants.css */
+
+/* General container styling */
+body{
+    padding: 10px;
+    margin: 0;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9dbdb; /* Dark Red background */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Header styling */
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #F5F5F5; /* Light grayish white text for contrast */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Empty applicants message */
+p {
+    font-size: 1.2rem;
+    color: #F5F5F5;
+    text-align: center;
+}
+
+/* Styling for each card */
+.card {
+    background-color: #f7eeee; /* Light red background for cards */
+    border: 1px solid #fad6d6; /* Soft red border */
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Hover effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Card body */
+.card-body {
+    padding: 15px;
+}
+
+/* Card title styling */
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #393737; /* Firebrick red for title */
+    margin-bottom: 8px;
+}
+
+/* Card subtitle styling */
+.card-subtitle {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #D2691E; /* Chocolate red for subtitle */
+}
+
+/* Flex container for cards */
+.d-flex {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    padding: 10px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .card {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .card-subtitle {
+        font-size: 0.9rem;
+    }
+}
