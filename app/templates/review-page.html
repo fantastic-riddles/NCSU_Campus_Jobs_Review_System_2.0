@@ -2,111 +2,78 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{url_for('static', filename='/css/review.css')}}"/>
-<section>
-    <div class="rt-container">
-        <div class="col-rt-12">
-            <div class="Scriptcontent">
-                <div class="feedback">
-                    <form method="post" action="/add">
-                        <h1>Please add your Review</h1>
-                        <hr class="survey-hr">
-                        
-                        <label for="job_title">What is your job position?</label><br><br>
-                        <input type="text" name="job_title" required><br><br>
 
-                        <hr class="survey-hr">
-                        <label for="department">In which department do you work in?</label><br><br>
-                        <input type="text" name="department" required><br><br>
+<section class="review-container">
+    <div class="form-wrapper">
+        <h1 class="heading">We Value Your Feedback</h1>
+        <p class="subheading">Share your job experience with us</p>
 
-                        <hr class="survey-hr">
-                        <label for="locations">What was your job location?</label><br><br>
-                        <input type="text" name="locations" required><br><br>
-
-                        <hr class="survey-hr">
-                        <label for="job_description">What all tasks do you work on?</label><br><br>
-                        <input type="text" name="job_description" required><br><br>
-
-                        <hr class="survey-hr">
-                        <label for="hourly_pay">What is your hourly pay rate?</label><br><br>
-                        <input type="text" name="hourly_pay" required><br><br>
-
-                        <hr class="survey-hr">
-                        <label for="benefits">Do you get any other benefits other than your salary? If yes, please specify.</label><br><br>
-                        <input type="text" name="benefits" required><br><br>
-
-                        <label>Your overall experience with your job?</label><br>
-                        <span class="star-rating">
-                            <input type="radio" id="rating1" name="rating" value="1">
-                            <label for="rating1"><i></i></label>
-                            <input type="radio" id="rating2" name="rating" value="2">
-                            <label for="rating2"><i></i></label>
-                            <input type="radio" id="rating3" name="rating" value="3">
-                            <label for="rating3"><i></i></label>
-                            <input type="radio" id="rating4" name="rating" value="4">
-                            <label for="rating4"><i></i></label>
-                            <input type="radio" id="rating5" name="rating" value="5">
-                            <label for="rating5"><i></i></label>
-                        </span><br><br>
-                        
-                        <hr class="survey-hr">
-                        <label>On a scale of poor to best, how likely would you recommend this job to others?</label><br><br>
-                        <div style="color:grey">
-                            <span style="float:left">POOR</span>
-                            <span style="float:right">BEST</span>
-                        </div>
-                        <span class="scale-rating">
-                            <label for="recommendation1">
-                                <input type="radio" id="recommendation1" name="recommendation" value="1">
-                                <span>1</span>
-                            </label>
-                            <label for="recommendation2">
-                                <input type="radio" id="recommendation2" name="recommendation" value="2">
-                                <span>2</span>
-                            </label>
-                            <label for="recommendation3">
-                                <input type="radio" id="recommendation3" name="recommendation" value="3">
-                                <span>3</span>
-                            </label>
-                            <label for="recommendation4">
-                                <input type="radio" id="recommendation4" name="recommendation" value="4">
-                                <span>4</span>
-                            </label>
-                            <label for="recommendation5">
-                                <input type="radio" id="recommendation5" name="recommendation" value="5">
-                                <span>5</span>
-                            </label>
-                            <label for="recommendation6">
-                                <input type="radio" id="recommendation6" name="recommendation" value="6">
-                                <span>6</span>
-                            </label>
-                            <label for="recommendation7">
-                                <input type="radio" id="recommendation7" name="recommendation" value="7">
-                                <span>7</span>
-                            </label>
-                            <label for="recommendation8">
-                                <input type="radio" id="recommendation8" name="recommendation" value="8">
-                                <span>8</span>
-                            </label>
-                            <label for="recommendation9">
-                                <input type="radio" id="recommendation9" name="recommendation" value="9">
-                                <span>9</span>
-                            </label>
-                            <label for="recommendation10">
-                                <input type="radio" id="recommendation10" name="recommendation" value="10">
-                                <span>10</span>
-                            </label>
-                        </span>
-                        
-
-                        <hr class="survey-hr">
-                        <label for="review">Can you describe more about the job in detail?</label><br><br>
-                        <textarea name="review" rows="5" required></textarea><br><br>
-
-                        <input type="submit" value="Submit your review" style="background:#43a7d5; color:#fff; padding:12px; border:0;">
-                    </form>
-                </div>
+        <form method="post" action="/add" class="review-form">
+            <div class="input-group">
+                <label for="job_title">Job Position</label>
+                <input type="text" name="job_title" placeholder="Your job title" required>
             </div>
-        </div>
+
+            <div class="input-group">
+                <label for="department">Department</label>
+                <input type="text" name="department" placeholder="Your department" required>
+            </div>
+
+            <div class="input-group">
+                <label for="locations">Job Location</label>
+                <input type="text" name="locations" placeholder="Your work location" required>
+            </div>
+
+            <div class="input-group">
+                <label for="job_description">Job Tasks</label>
+                <input type="text" name="job_description" placeholder="Describe your tasks" required>
+            </div>
+
+            <div class="input-group">
+                <label for="hourly_pay">Hourly Pay</label>
+                <input type="text" name="hourly_pay" placeholder="Your hourly pay rate" required>
+            </div>
+
+            <div class="input-group">
+                <label for="benefits">Other Benefits</label>
+                <input type="text" name="benefits" placeholder="Other benefits you receive" required>
+            </div>
+
+            <div class="rating-group">
+              <label>Your overall job experience:</label>
+              <div class="stars">
+                  <input type="radio" id="rating1" name="rating" value="1"><label for="rating1">★</label>
+                  <input type="radio" id="rating2" name="rating" value="2"><label for="rating2">★</label>
+                  <input type="radio" id="rating3" name="rating" value="3"><label for="rating3">★</label>
+                  <input type="radio" id="rating4" name="rating" value="4"><label for="rating4">★</label>
+                  <input type="radio" id="rating5" name="rating" value="5"><label for="rating5">★</label>
+              </div>
+          </div>
+          
+          <div class="recommendation">
+              <label>How likely would you recommend this job?</label>
+              <div class="scale">
+                  <input type="radio" id="recommendation1" name="recommendation" value="1"><label for="recommendation1">1</label>
+                  <input type="radio" id="recommendation2" name="recommendation" value="2"><label for="recommendation2">2</label>
+                  <input type="radio" id="recommendation3" name="recommendation" value="3"><label for="recommendation3">3</label>
+                  <input type="radio" id="recommendation4" name="recommendation" value="4"><label for="recommendation4">4</label>
+                  <input type="radio" id="recommendation5" name="recommendation" value="5"><label for="recommendation5">5</label>
+                  <input type="radio" id="recommendation6" name="recommendation" value="6"><label for="recommendation6">6</label>
+                  <input type="radio" id="recommendation7" name="recommendation" value="7"><label for="recommendation7">7</label>
+                  <input type="radio" id="recommendation8" name="recommendation" value="8"><label for="recommendation8">8</label>
+                  <input type="radio" id="recommendation9" name="recommendation" value="9"><label for="recommendation9">9</label>
+                  <input type="radio" id="recommendation10" name="recommendation" value="10"><label for="recommendation10">10</label>
+              </div>
+          </div>
+          
+          
+            <div class="input-group">
+                <label for="review">Describe the job in detail:</label>
+                <textarea name="review" rows="5" placeholder="Write your detailed review here" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Your Review</button>
+        </form>
     </div>
 </section>
 {% endblock %}
