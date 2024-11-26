@@ -23,7 +23,7 @@ Routes:
 
 Each route interacts with the database, managing user sessions, and displays specific templates.
 """
-
+from app.inappropriate_words import badwords
 from functools import wraps
 from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db
@@ -207,11 +207,15 @@ def add():
     review_sample = form.get('review')
     rating = form.get('rating')
     recommendation = form.get('recommendation')
-
+    inappropriate_words_list=badwords()
+    filtered_review = ' '.join(
+    word for word in review_sample.split()
+    if word.lower() not in inappropriate_words_list
+)   
     entry = Reviews(job_title=title, job_description=description,
                     department=department, locations=locations,
                     hourly_pay=hourly_pay, benefits=benefits,
-                    review=review_sample, rating=rating,
+                    review=filtered_review, rating=rating,
                     recommendation=recommendation)
     db.session.add(entry) # pylint: disable=no-member
     db.session.commit() # pylint: disable=no-member
