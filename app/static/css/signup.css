@@ -1,0 +1,160 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+.main-content {
+    background-color: #f8f9fa;
+}
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.signup-form-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+.form-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 16px;
+    background-color: #fafafa;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+.input-group-text {
+    background-color: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 8px 0 0 8px;
+}
+
+.input-group .form-control {
+    border-radius: 0 8px 8px 0;
+}
+
+.btn-danger {
+    width: 100%;
+    background-color: #dc3545;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Error Alert Styles */
+.alert {
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    border-radius: 8px;
+}
+
+.alert p {
+    margin: 0;
+}
+
+.alert .btn-close {
+    background: none;
+    border: none;
+    color: #721c24;
+    font-size: 18px;
+}
+
+/* Terms and Conditions Checkbox */
+.form-check-label {
+    font-size: 14px;
+    color: #555;
+}
+
+.form-check-input {
+    border-color: #dc3545;
+}
+
+.alert {
+    display: none; /* Hide by default */
+  }
+  
+  .alert.show {
+    display: block; /* Show only when toggled */
+  }
+  
+  .invalid-feedback,
+  .valid-feedback {
+    display: none; /* Initially hidden */
+  }
+  
+  .was-validated .invalid-feedback {
+    display: block; /* Display invalid feedback when form is validated */
+  }
+  
+  .was-validated .valid-feedback {
+    display: block; /* Display valid feedback when form is validated */
+  }
+  
+/* Sign-Up Link */
+.text-danger {
+    color: #dc3545;
+}
+
+.text-danger:hover {
+    color: #c82333;
+    text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .signup-form-container {
+        padding: 25px;
+    }
+
+    .form-control, .form-select, .btn-danger {
+        font-size: 14px;
+    }
+
+    .input-group-text {
+        font-size: 14px;
+    }
+}
