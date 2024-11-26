@@ -14,7 +14,7 @@ permissions:
 jobs:
   autopep8:
     name: Autopep8
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       PYTHONPATH: ${{ github.workspace }}
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   pylint:
     name: Pylint
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: autopep8
     env:
       PYTHONPATH: ${{ github.workspace }}
@@ -54,7 +54,7 @@ jobs:
 
   radon:
      name: Cyclomatic complexity
-     runs-on: ubuntu-latest
+     runs-on: macos-latest
      needs: [autopep8, pylint]
      env:
       PYTHONPATH: ${{ github.workspace }}
@@ -76,7 +76,7 @@ jobs:
 
   coverage:
     name: Code Coverage
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       PYTHONPATH: ${{ github.workspace }}
     needs: [autopep8, pylint, radon]
@@ -105,7 +105,7 @@ jobs:
 
   generate-badges:
     name: Generate Badges
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: coverage
     env:
       PYTHONPATH: ${{ github.workspace }}
@@ -235,14 +235,14 @@ jobs:
       - name: Commit and push changes
         uses: EndBug/add-and-commit@v9
         with:
-          author_name: RMV
-          author_email: RMV@example.com
+          author_name: fantastic-riddles
+          author_email: fantastic-riddles@example.com
           message: Update badges in README
 
   check-status:
     name: Check Status
     needs: [generate-badges]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: always()
     steps:
       - name: Check job status
