@@ -231,9 +231,10 @@ Once the container is running, you can access the application by navigating to `
 
 We'd like to thank the following contributors for their valuable input and enhancements to this project:
 
-- [Prerak Bhandari](https://github.com/bhandariprerak)
-- [Akshat Shah](https://github.com/akshatrshah)
-- [Dhairya Shah](https://github.com/scooby3000)
+- [Prerak Bhandari](https://github.com/bhandariprerak) - [bhandariprerak@gmail.com](mailto:bhandariprerak@gmail.com)
+- [Akshat Shah](https://github.com/akshatrshah) - [akshatrshah@gmail.com](mailto:akshatrshah@gmail.com)
+- [Dhairya Shah](https://github.com/scooby3000) - [dhairya3000@gmail.com](mailto:dhairya3000@gmail.com)
+
 
 #### Acknowledgements
 
