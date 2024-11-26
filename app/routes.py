@@ -28,7 +28,7 @@ from functools import wraps
 from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db
 from app.email_notification import send_welcome_email
-from app.models import Reviews, User, Job, Application
+from app.models import Reviews, User, Job, Application,Upvote
 
 
 
@@ -54,6 +54,31 @@ def default():
     """
     return redirect(url_for('home'))
 
+@app.route('/upvote/<int:review_id>', methods=['POST'])
+@login_required
+def upvote_review(review_id):
+    """Allow a user to upvote a review"""
+    user_name = session.get('username')
+
+    # Check if the user has already upvoted this review
+    existing_upvote = Upvote.query.filter_by(review_id=review_id, user_name=user_name).first()
+    
+    if existing_upvote:
+        flash('You have already upvoted this review.')
+        return redirect(url_for('page_content'))
+
+    # Add an upvote entry
+    new_upvote = Upvote(review_id=review_id, user_name=user_name)
+    db.session.add(new_upvote)
+
+    # Increment the review's upvote count
+    review = Reviews.query.get(review_id)
+    if review:
+        review.upvote_count += 1
+        db.session.commit()
+        flash('Upvoted successfully!')
+    
+    return redirect(url_for('page_content'))
 
 @app.route('/login', methods=['GET', 'POST'])  # Route for handling the login page logic
 def login():
