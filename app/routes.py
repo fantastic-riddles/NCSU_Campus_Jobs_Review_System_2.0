@@ -28,8 +28,7 @@ from functools import wraps
 from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db
 from app.email_notification import send_welcome_email, send_new_job_email
-from app.models import Reviews, User, Job, Application,Upvote
-
+from app.models import Reviews, User, Job, Application,Upvote, Experience
 
 
 # Decorator to check if user is logged in
@@ -414,3 +413,57 @@ def contact_us():
     """An API for the user to be able to access the Contact Us through the navbar"""
     entries = Reviews.query.all()
     return render_template('contact.html', entries=entries)
+
+@app.route('/add-experience', methods=['GET', 'POST'])
+@login_required
+def add_experience():
+    if request.method == 'POST':
+        linkedin_url = request.form.get('linkedin_url')  # Getting LinkedIn URL from form
+        cover_letter = request.form.get('cover_letter')
+        prev_experience = request.form.get('prev_experience')
+
+        # Get the current user's username from the session
+        user_name = session.get('username')
+
+        # Check if the user already has an experience
+        existing_experience = Experience.query.filter_by(user_name=user_name).first()
+        if existing_experience:
+            flash('Experience already exists. Please update it instead.')
+            return redirect(url_for('update_experience'))  # Redirect to update experience
+
+        # Create a new experience entry
+        new_experience = Experience(
+            user_name=user_name,
+            linkedin_url=linkedin_url,  # Using linkedin_url instead of years_of_experience
+            cover_letter=cover_letter,
+            prev_experience=prev_experience
+        )
+        db.session.add(new_experience)
+        db.session.commit()
+        flash('Experience added successfully!')
+        return redirect(url_for('profile'))  # Redirect to the user's profile page
+
+    return render_template('add_experience.html')  # Render the form template
+
+
+@app.route('/update-experience', methods=['GET', 'POST'])
+@login_required
+def update_experience():
+    # Get the current user's username from the session
+    user_name = session.get('username')
+    experience = Experience.query.filter_by(user_name=user_name).first()
+
+    if not experience:
+        flash('No experience found. Please add your experience first.')
+        return redirect(url_for('add_experience'))  # Redirect to add experience page if not found
+
+    if request.method == 'POST':
+        experience.linkedin_url = request.form.get('linkedin_url')  # Updating linkedin_url
+        experience.cover_letter = request.form.get('cover_letter')
+        experience.prev_experience = request.form.get('prev_experience')
+
+        db.session.commit()
+        flash('Experience updated successfully!')
+        return redirect(url_for('profile'))  # Redirect to the user's profile page
+
+    return render_template('update_experience.html', experience=experience)  # Render a form with existing data

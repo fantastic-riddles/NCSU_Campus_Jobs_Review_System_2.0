@@ -39,7 +39,18 @@ class User(db.Model):
     
     applications = relationship("Application", back_populates="user")
     jobs = relationship("Job", back_populates="employer") 
+    experience = relationship("Experience", back_populates="user", uselist=False)
+
+class Experience(db.Model):
+    __tablename__ = 'experiences'
+    id = db.Column(db.Integer, primary_key=True)
+    cover_letter = db.Column(db.Text, nullable=True)
+    prev_experience = db.Column(db.Text, nullable=True)
+    linkedin_url = db.Column(db.String(255), nullable=True)  # Adding the LinkedIn URL field
     
+    user_name = db.Column(db.String(10), ForeignKey('users.user_name'), unique=True)
+    user = relationship("User", back_populates="experience")
+
 class Job(db.Model):
     """Model that stores job details"""
     __tablename__ = 'jobs'
