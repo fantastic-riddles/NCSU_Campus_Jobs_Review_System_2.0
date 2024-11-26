@@ -24,7 +24,7 @@
                 <th>Review</th>
                 <th>Rating</th>
                 <th>Recommendation</th>
-                <th>Upvotes</th>  <!-- New Column for Upvotes -->
+                <th onclick="sortTableByUpvotes()">Upvotes <i class="fa fa-sort"></i></th>
                 {% if session['type'] == 'admin' %}
                 <th>Delete</th>
                 {% endif %}
@@ -69,6 +69,7 @@
 </div>
 
 <script>
+    // Filter function for search
     function filterTable() {
         const input = document.getElementById('searchInput').value.toLowerCase();
         const table = document.getElementById('jobTable');
@@ -86,6 +87,25 @@
             }
         }
     }
+
+    // Sorting function for upvotes
+    function sortTableByUpvotes() {
+        const table = document.getElementById('jobTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.getElementsByTagName('tr'));
+
+        rows.sort((a, b) => {
+            const upvotesA = parseInt(a.getElementsByTagName('td')[9]?.innerText || '0');
+            const upvotesB = parseInt(b.getElementsByTagName('td')[9]?.innerText || '0');
+            return upvotesB - upvotesA; // Descending order
+        });
+
+        // Reattach sorted rows to the tbody
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // Sort the table by upvotes on page load
+    document.addEventListener('DOMContentLoaded', sortTableByUpvotes);
 </script>
 
 {% endblock %}
