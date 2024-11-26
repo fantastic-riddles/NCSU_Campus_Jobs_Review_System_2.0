@@ -1,0 +1,132 @@
+/* add_job.css */
+
+/* General container styling */
+.container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Card styling */
+.card {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: #ef9a9a; /* Muted soft red */
+    color: white;
+    border-radius: 8px 8px 0 0;
+    padding: 20px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 8px 8px;
+}
+
+/* Flash message */
+.alert {
+    background-color: #fce4ec; /* Very light pink for flash message */
+    color: #c2185b; /* Slightly muted dark red */
+    border-left: 4px solid #c2185b;
+    font-weight: normal;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 500;
+    color: #c2185b; /* Muted dark red */
+    font-size: 1rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ef9a9a; /* Subtle soft red border */
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-top: 6px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #f06292; /* Lighter red on focus */
+    background-color: #fff;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Submit button */
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #ef9a9a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #e57373; /* Slightly darker red on hover */
+    transform: translateY(-1px); /* Subtle hover effect */
+}
+
+button[type="submit"]:active {
+    background-color: #c2185b; /* Darker red on click */
+    transform: translateY(1px); /* Button press effect */
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .card-header {
+        font-size: 1.3rem;
+        padding: 18px;
+    }
+
+    .form-group label {
+        font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 0.95rem;
+        padding: 8px;
+    }
+
+    button[type="submit"] {
+        font-size: 1rem;
+    }
+}
