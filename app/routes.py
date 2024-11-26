@@ -27,7 +27,7 @@ Each route interacts with the database, managing user sessions, and displays spe
 from functools import wraps
 from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db
-from app.email_notification import send_welcome_email
+from app.email_notification import send_welcome_email, send_new_job_email
 from app.models import Reviews, User, Job, Application,Upvote
 
 
@@ -263,7 +263,12 @@ def add_job():
         db.session.add(new_job) # pylint: disable=no-member
         db.session.commit() # pylint: disable=no-member
 
+        # Fetch all email addresses from the 'users' table
+        emails = [user.email for user in User.query.with_entities(User.email).all()]
+
         flash("Job posted successfully!")
+        for email in emails:
+            send_new_job_email(email, title, description, location, pay)
         return redirect(url_for('home'))
 
     return render_template('add_job.html')
