@@ -40,6 +40,11 @@ Empower Your Future: Find Your Campus Opportunity with NCSU!
 
 The NCSU Campus Job Review System is a dynamic Flask application designed to empower students at North Carolina State University by providing a platform for reviewing campus job opportunities. By sharing experiences and insights, students can make informed decisions about job applications, enhancing their understanding of available roles. This comprehensive system not only supports students in their job search but also enables employers to connect with potential candidates, creating a vibrant campus employment community.
 
+
+https://github.com/user-attachments/assets/8fbaf56c-5cf4-4b41-9713-47709cf2270a
+
+
+
 <a href="https://ncsu-campus-jobs-review-system-2-0.onrender.com/">Link to our live page!!</a>
 
 #### Key Enhancements
@@ -63,6 +68,9 @@ The NCSU Campus Job Review System is a dynamic Flask application designed to emp
 
 ### Why use our application? # TODO: change this link
 [![Watch the Demo on YouTube](https://i9.ytimg.com/vi/D8kcTJBJ-TA/mqdefault.jpg?sqp=CMjVlrkG-oaymwEmCMACELQB8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgWyhJMA8=&rs=AOn4CLBwCL62F_hC8-fGzH3Ov4uWhIhhSw)](https://youtu.be/D8kcTJBJ-TA)
+
+
+
 
 
 ### Documentation <img src="https://repository-images.githubusercontent.com/163785224/b132d200-de4c-11ea-9e51-20d2ca497da7" alt="Pdoc" width="90"/>
