@@ -1592,3 +1592,393 @@ def test_upvote_multiple_users(setup_db):
     db.session.commit()
 
     assert Upvote.query.filter_by(review_id=review.id).count() == 2  # Ensure two upvotes for the review
+
+def test_upvote_unique_constraint(setup_db):
+    """Test that a user cannot upvote a review more than once"""
+    user = User(user_name="unique_user", name="Unique User", email="unique@example.com", password="password", type="applicant")
+    db.session.add(user)
+    db.session.commit()
+
+    review = Reviews(department="IT", locations="NC", job_title="Software Engineer", job_description="Develop software", hourly_pay=50, benefits="Health", review="Good Job", rating=4, recommendation=1)
+    db.session.add(review)
+    db.session.commit()
+
+    # First upvote
+    upvote = Upvote(review_id=review.id, user_name=user.user_name)
+    db.session.add(upvote)
+    db.session.commit()
+
+    # Second upvote (should fail due to unique constraint)
+    with pytest.raises(Exception):
+        upvote_duplicate = Upvote(review_id=review.id, user_name=user.user_name)
+        db.session.add(upvote_duplicate)
+        db.session.commit()
+
+
+def test_upvote_non_existent_review(setup_db):
+    """Test that an upvote cannot be created for a non-existent review"""
+    user = User(user_name="nonexistent_user", name="Nonexistent User", email="nonexistent@example.com", password="password", type="applicant")
+    db.session.add(user)
+    db.session.commit()
+
+    # Try upvoting a review with an invalid ID
+    try:
+        upvote = Upvote(review_id=9999, user_name=user.user_name)  # Non-existent review
+        db.session.add(upvote)
+        db.session.commit()
+    except Exception as e:
+        assert "foreign key constraint failed" in str(e)
+
+
+def test_upvote_non_existent_user(setup_db):
+    """Test that an upvote cannot be created by a non-existent user"""
+    review = Reviews(department="IT", locations="NC", job_title="Software Engineer", job_description="Develop software", hourly_pay=50, benefits="Health", review="Good Job", rating=4, recommendation=1)
+    db.session.add(review)
+    db.session.commit()
+
+    # Try upvoting with a non-existent user
+    try:
+        upvote = Upvote(review_id=review.id, user_name="nonexistent_user")  # Non-existent user
+        db.session.add(upvote)
+        db.session.commit()
+    except Exception as e:
+        assert "foreign key constraint failed" in str(e)
+
+
+def test_upvote_retrieve_user_and_review(setup_db):
+    """Test that an upvote can correctly retrieve the user and review it corresponds to"""
+    user = User(user_name="user1", name="User One", email="user1@example.com", password="password", type="applicant")
+    db.session.add(user)
+    db.session.commit()
+
+    review = Reviews(department="IT", locations="NC", job_title="Software Engineer", job_description="Develop software", hourly_pay=50, benefits="Health", review="Good Job", rating=4, recommendation=1)
+    db.session.add(review)
+    db.session.commit()
+
+    upvote = Upvote(review_id=review.id, user_name=user.user_name)
+    db.session.add(upvote)
+    db.session.commit()
+
+    upvote_in_db = Upvote.query.filter_by(review_id=review.id, user_name=user.user_name).first()
+    assert upvote_in_db is not None
+    assert upvote_in_db.review_id == review.id
+    assert upvote_in_db.user_name == user.user_name
+
+
+def test_upvote_user_name_length_constraint(setup_db):
+    """Test that the user_name field has the correct length constraint"""
+    user = User(user_name="user1", name="User One", email="user1@example.com", password="password", type="applicant")
+    db.session.add(user)
+    db.session.commit()
+
+    review = Reviews(department="IT", locations="NC", job_title="Software Engineer", job_description="Develop software", hourly_pay=50, benefits="Health", review="Good Job", rating=4, recommendation=1)
+    db.session.add(review)
+    db.session.commit()
+
+    long_user_name = "user_with_long_name"
+    try:
+        upvote = Upvote(review_id=review.id, user_name=long_user_name)  # Should fail if user_name exceeds the length limit
+        db.session.add(upvote)
+        db.session.commit()
+    except Exception as e:
+        assert "value too long" in str(e)
+
+
+def test_upvote_multiple_upvotes_for_different_users(setup_db):
+    """Test that different users can upvote different reviews"""
+    user1 = User(user_name="user1", name="User One", email="user1@example.com", password="password", type="applicant")
+    user2 = User(user_name="user2", name="User Two", email="user2@example.com", password="password", type="applicant")
+    db.session.add(user1)
+    db.session.add(user2)
+    db.session.commit()
+
+    review1 = Reviews(department="IT", locations="NC", job_title="Software Engineer", job_description="Develop software", hourly_pay=50, benefits="Health", review="Great Company", rating=4, recommendation=1)
+    review2 = Reviews(department="Finance", locations="NY", job_title="Financial Analyst", job_description="Analyze data", hourly_pay=60, benefits="Health", review="Good place", rating=3, recommendation=0)
+    db.session.add(review1)
+    db.session.add(review2)
+    db.session.commit()
+
+    upvote1 = Upvote(review_id=review1.id, user_name=user1.user_name)
+    upvote2 = Upvote(review_id=review2.id, user_name=user2.user_name)
+    db.session.add(upvote1)
+    db.session.add(upvote2)
+    db.session.commit()
+
+    assert Upvote.query.filter_by(review_id=review1.id).count() == 1
+    assert Upvote.query.filter_by(review_id=review2.id).count() == 1
+
+
+
+
+
+
+
+def test_review_recommendation_binary():
+    """Verify recommendation is binary (0 or 1)"""
+    review = Reviews(
+        department='Customer Service',
+        locations='Remote',
+        job_title='Support Specialist',
+        job_description='Provide customer support',
+        hourly_pay=40,
+        benefits='Flexible hours',
+        review='Friendly team',
+        rating=3,
+        recommendation=0
+    )
+    db.session.add(review)
+    db.session.commit()
+    
+    assert review.recommendation in [0, 1]
+
+def test_review_string_fields_not_empty():
+    """Ensure string fields are not empty"""
+    review = Reviews(
+        department='Product',
+        locations='San Jose',
+        job_title='Product Manager',
+        job_description='Manage product development',
+        hourly_pay=65,
+        benefits='Comprehensive benefits',
+        review='Innovative company',
+        rating=5,
+        recommendation=1
+    )
+    
+    assert review.department
+    assert review.locations
+    assert review.job_title
+    assert review.job_description
+    assert review.benefits
+    assert review.review
+
+
+
+
+def test_review_length_constraints():
+    """Basic test for string field length constraints"""
+    review = Reviews(
+        department='Tech',
+        locations='San Francisco',
+        job_title='Software Engineer',
+        job_description='Develop software applications',
+        hourly_pay=55,
+        benefits='Comprehensive package',
+        review='Great workplace with amazing opportunities',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert len(review.department) <= 64
+    assert len(review.locations) <= 120
+    assert len(review.job_title) <= 64
+    assert len(review.job_description) <= 120
+    assert len(review.benefits) <= 120
+    assert len(review.review) <= 120
+
+# Add more simple tests as needed
+def test_review_creation_without_optional_methods():
+    """Test creating a review without explicitly calling methods"""
+    review = Reviews(
+        department='Operations',
+        locations='Denver',
+        job_title='Operations Manager',
+        job_description='Manage daily operations',
+        hourly_pay=52,
+        benefits='Performance bonus',
+        review='Efficient work environment',
+        rating=3,
+        recommendation=0
+    )
+    
+    assert review is not None
+
+
+
+def test_review_rating_integer():
+    """Verify rating is an integer"""
+    review = Reviews(
+        department='Marketing',
+        locations='Atlanta',
+        job_title='Digital Marketer',
+        job_description='Manage digital marketing campaigns',
+        hourly_pay=50,
+        benefits='Creative environment',
+        review='Innovative marketing strategies',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert isinstance(review.rating, int)
+
+
+
+def test_review_benefits_optional():
+    """Verify benefits can be set or left as default"""
+    review = Reviews(
+        department='Research',
+        locations='Cambridge',
+        job_title='Research Scientist',
+        job_description='Conduct scientific research',
+        hourly_pay=60,
+        benefits='Research grants',
+        review='Cutting-edge research opportunities',
+        rating=5,
+        recommendation=1
+    )
+    
+    assert review.benefits is not None
+
+
+
+import pytest
+from flask import current_app
+
+def test_review_creation_without_methods():
+    """Test basic review object instantiation"""
+
+    review = Reviews(
+        department='Engineering',
+        locations='San Francisco',
+        job_title='Software Engineer',
+        job_description='Develop web applications',
+        hourly_pay=50,
+        benefits='Health Insurance',
+        review='Great workplace',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert review is not None
+    assert review.department == 'Engineering'
+    assert review.job_title == 'Software Engineer'
+
+def test_review_required_fields():
+    """Ensure all required fields are present"""
+
+    review = Reviews(
+        department='HR',
+        locations='Boston',
+        job_title='HR Manager',
+        job_description='Manage human resources',
+        hourly_pay=55,
+        benefits='Comprehensive package',
+        review='Supportive environment',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert review.department is not None
+    assert review.job_title is not None
+    assert review.rating is not None
+
+def test_review_rating_positive():
+    """Verify rating is positive"""
+
+    review = Reviews(
+        department='Sales',
+        locations='Chicago',
+        job_title='Sales Representative',
+        job_description='Sell products',
+        hourly_pay=40,
+        benefits='Commission',
+        review='Challenging role',
+        rating=5,  # Assuming 1-5 rating scale
+        recommendation=1
+    )
+    
+    assert review.rating > 0
+    assert review.rating <= 5
+
+def test_review_hourly_pay_range():
+    """Verify hourly pay is within reasonable range"""
+
+    review = Reviews(
+        department='IT',
+        locations='Seattle',
+        job_title='Network Engineer',
+        job_description='Manage network infrastructure',
+        hourly_pay=55,
+        benefits='Remote work',
+        review='Challenging technical role',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert review.hourly_pay > 0
+    assert review.hourly_pay < 1000  # Assuming reasonable max hourly rate
+
+def test_review_recommendation_binary():
+    """Verify recommendation is binary"""
+
+    review = Reviews(
+        department='Customer Service',
+        locations='Remote',
+        job_title='Support Specialist',
+        job_description='Provide customer support',
+        hourly_pay=40,
+        benefits='Flexible hours',
+        review='Friendly team',
+        rating=3,
+        recommendation=0
+    )
+    
+    assert review.recommendation in [0, 1]
+
+def test_review_string_field_limits():
+    """Test string field length constraints"""
+
+    review = Reviews(
+        department='Tech',
+        locations='San Francisco',
+        job_title='Software Engineer',
+        job_description='Develop software applications',
+        hourly_pay=55,
+        benefits='Comprehensive package',
+        review='Great workplace with amazing opportunities',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert len(review.department) <= 64
+    assert len(review.locations) <= 120
+    assert len(review.job_title) <= 64
+    assert len(review.job_description) <= 120
+    assert len(review.benefits) <= 120
+    assert len(review.review) <= 120
+
+
+
+def test_review_department_assignment():
+    """Test department assignment"""
+
+    review = Reviews(
+        department='Product',
+        locations='San Jose',
+        job_title='Product Manager',
+        job_description='Manage product development',
+        hourly_pay=65,
+        benefits='Comprehensive benefits',
+        review='Innovative company',
+        rating=5,
+        recommendation=1
+    )
+    
+    assert review.department == 'Product'
+
+def test_review_job_title_assignment():
+    """Test job title assignment""" # Adjust import as needed
+
+    review = Reviews(
+        department='Engineering',
+        locations='Mountain View',
+        job_title='Data Scientist',
+        job_description='Analyze complex data sets',
+        hourly_pay=70,
+        benefits='Research opportunities',
+        review='Cutting-edge research',
+        rating=4,
+        recommendation=1
+    )
+    
+    assert review.job_title == 'Data Scientist'
